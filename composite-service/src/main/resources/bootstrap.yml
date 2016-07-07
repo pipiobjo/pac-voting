@@ -1,0 +1,11 @@
+server:
+  port: 8280
+
+
+spring:
+  application:
+    name: composite-service
+
+
+info:
+  component: Composite Server
