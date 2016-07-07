@@ -1,6 +1,0 @@
-com/prodyna/pac/ResourceApplication.class
-com/prodyna/pac/controller/VotingController.class
-com/prodyna/pac/SimpleCORSFilter.class
-com/prodyna/pac/controller/VotingController$Message.class
-com/prodyna/pac/service/SurveyService.class
-com/prodyna/pac/service/SurveyService$1.class

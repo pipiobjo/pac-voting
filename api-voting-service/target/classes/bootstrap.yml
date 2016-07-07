@@ -1,9 +1,0 @@
-spring:
-  application:
-    name: api-voting-service
-
-info:
-  component: API Server
-
-server:
-  port: 9000
