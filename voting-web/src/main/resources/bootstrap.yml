@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: ui-web
+
+
+server:
+  port: 8080
