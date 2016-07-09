@@ -1,2 +1,2 @@
 Publish Monitoring Stream 
-Hystrix Stream: http://bpipiorke:8000/hystrix.stream/
+Hystrix Stream: http://bpipiorke:8280/hystrix.stream/

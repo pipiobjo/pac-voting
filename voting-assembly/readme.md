@@ -23,3 +23,8 @@ http://localhost:8761/
 
 http://localhost:8180 
 
+
+
+== Monitoring == 
+
+http://localhost:7979/

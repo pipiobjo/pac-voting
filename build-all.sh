@@ -12,7 +12,7 @@ cd persistence-voting; 		mvn clean deploy $MAVEN_OPTS; cd -
 cd support-auth-server;         mvn clean deploy $MAVEN_OPTS; cd -
 cd support-config;              mvn clean deploy $MAVEN_OPTS; cd -
 cd support-edge-server;         mvn clean deploy $MAVEN_OPTS; cd -
-cd support-monitor-dashboard;   mvn clean deploy $MAVEN_OPTS; cd -
+cd support-monitor;   mvn clean deploy $MAVEN_OPTS; cd -
 cd support-service-registry;    mvn clean deploy $MAVEN_OPTS; cd -
 cd support-turbine;             mvn clean deploy $MAVEN_OPTS; cd -
 
