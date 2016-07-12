@@ -39,7 +39,8 @@ zuul:
       sensitive-headers:
     user:
       path: /user/**
-      url: http://localhost:9999/uaa/user
+      #url: http://localhost:9999/uaa/user
+      serviceId: support-auth
   debug:
      request: true
 

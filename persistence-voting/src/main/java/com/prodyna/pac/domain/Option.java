@@ -1,78 +1,116 @@
 package com.prodyna.pac.domain;
 
 import java.util.HashSet;
+
 import java.util.Set;
+import java.util.UUID;
 
 import org.neo4j.ogm.annotation.GraphId;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Relationship;
-
 /**
  * Created by bjoern on 07.03.16.
  */
 @NodeEntity
 public class Option {
-    @GraphId
-    Long optionId;
+	@GraphId
+	Long graphId;
 
-    String description;
+	String optionId;
 
-    @Relationship(type = "OPTION_CREATOR", direction = Relationship.UNDIRECTED)
-    public User creator;
+	String description;
 
-    @Relationship(type = "VOTED_OPTION", direction = Relationship.UNDIRECTED)
-    public Set<User> voters = new HashSet<User>();
+	@Relationship(type = "OPTION_CREATED_BY", direction = Relationship.OUTGOING)
+	public User creator;
 
-    public Option(){
+	@Relationship(type = "VOTED_BY", direction = Relationship.OUTGOING)
+	public Set<User> voters = new HashSet<User>();
 
-    }
+	@Relationship(type="SURVEY_HAS_VOTING_OPTIONS", direction = Relationship.INCOMING)
+	public Set<Survey> surveysAssigned = new HashSet<>();
+	
+	
+	public Option() {
 
-    /**
-     *
-     * @param description
-     * @param creator
-     */
-    public Option(String description, User creator) {
-        this.description = description;
-        this.creator = creator;
-    }
+	}
 
-    public String getDescription() {
-        return description;
-    }
+	/**
+	 *
+	 * @param description
+	 * @param creator
+	 */
+	public Option(String description, User creator) {
+		this.description = description;
+		this.creator = creator;
+		this.optionId = UUID.randomUUID().toString();
+	}
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+	/**
+	 * 
+	 * @return
+	 */
+	public String getDescription() {
+		return description;
+	}
 
+	/**
+	 * 
+	 * @param description
+	 */
+	public void setDescription(String description) {
+		this.description = description;
+	}
 
-    @Relationship(type = "OPTION_CREATOR", direction = Relationship.UNDIRECTED)
-    public User getCreator() {
-        return creator;
-    }
+	/**
+	 * @return the optionId
+	 */
+	public String getOptionId() {
+		return optionId;
+	}
 
-    @Relationship(type = "OPTION_CREATOR", direction = Relationship.UNDIRECTED)
-    public void setCreator(User creator){
-        this.creator = creator;
-    }
+	/**
+	 * @param optionId
+	 *            the optionId to set
+	 */
+	public void setOptionId(String optionId) {
+		this.optionId = optionId;
+	}
 
+	@Relationship(type = "OPTION_CREATED_BY", direction = Relationship.OUTGOING)
+	public User getCreator() {
+		return creator;
+	}
 
+	@Relationship(type = "OPTION_CREATED_BY", direction = Relationship.OUTGOING)
+	public void setCreator(User creator) {
+		this.creator = creator;
+	}
 
+	@Relationship(type = "VOTED_BY", direction = Relationship.OUTGOING)
+	public Set<User> getVoters() {
+		return this.voters;
+	}
 
-    @Relationship(type = "VOTED_OPTION", direction = Relationship.UNDIRECTED)
-    public Set<User> getVoters() {
-        return this.voters;
-    }
+	@Relationship(type = "VOTED_BY", direction = Relationship.OUTGOING)
+	public void setVoters(Set<User> voters) {
+		this.voters = voters;
+	}
 
-    @Relationship(type = "VOTED_OPTION", direction = Relationship.UNDIRECTED)
-    public void setVoters(Set<User> voters){
-        this.voters = voters;
-    }
+	/**
+	 * @return the surveysAssigned
+	 */
+	public Set<Survey> getSurveysAssigned() {
+		return surveysAssigned;
+	}
 
-    public void vote(User user){
-        if(this.voters == null){
-            this.voters = new HashSet<User>();
-        }
-        this.voters.add(user);
-    }
+	/**
+	 * @param surveysAssigned the surveysAssigned to set
+	 */
+	public void setSurveysAssigned(Set<Survey> surveysAssigned) {
+		this.surveysAssigned = surveysAssigned;
+	}
+	
+	
+	
+
 }

@@ -1,50 +1,38 @@
-/*
 package com.prodyna.pac.controller;
 
-*/
 /**
  * Created by bjoern on 11.02.16.
- *//*
-
+**/
 
 import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
 
-
-import Vote;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.cloud.client.ServiceInstance;
-import org.springframework.cloud.client.discovery.DiscoveryClient;
-import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
-@Configuration
-@ComponentScan
-@EnableAutoConfiguration
-@EnableEurekaClient
+import com.prodyna.pac.domain.Survey;
+import com.prodyna.pac.repo.OptionGraphRepository;
+import com.prodyna.pac.repo.SurveyGraphRepository;
+import com.prodyna.pac.repo.UserGraphRepository;
+
 @RestController
 public class VotesController {
 
     @Autowired
-    private DiscoveryClient discoveryClient;
-    private static final String template = "Hello, %s!";
-    private final AtomicLong counter = new AtomicLong();
+    SurveyGraphRepository surveyRepository;
 
-    @RequestMapping("/service-instances/{applicationName}")
-    public List<ServiceInstance> serviceInstancesByApplicationName(
-            @PathVariable String applicationName) {
-        return this.discoveryClient.getInstances(applicationName);
-    }
+    @Autowired
+    UserGraphRepository userRepository;
 
+    @Autowired
+    OptionGraphRepository optionRepository;
 
-    @RequestMapping(value = "/votes", method = RequestMethod.GET)
-    public @ResponseBody
-    Vote greeting(@RequestParam(required = false, defaultValue = "World") String name) {
-        System.out.println("==== in Vote ====");
-        return new Vote(counter.incrementAndGet(), String.format(template, name));
+    @RequestMapping(value = "/vote/surveys/{surveyId}/option/{optionId}/users/{userId}", method = RequestMethod.POST)
+    public Survey voteOption(@PathVariable("surveyId") String surveyId, @PathVariable("optionId") String optionId, @PathVariable("userId") String userId) throws Exception {
+        return surveyRepository.findBySurveyId(surveyId);
+        
     }
 
 }
@@ -54,4 +42,3 @@ public class VotesController {
 
 
 
-*/

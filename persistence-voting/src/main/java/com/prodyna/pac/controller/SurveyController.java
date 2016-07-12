@@ -49,10 +49,10 @@ public class SurveyController {
         userRepository.save(voter2);
 
         Option vop0 = new Option("Opt1", optionCreator);
-        vop0.vote(voter);
+       // vop0.vote(voter);
         Option vop1 = new Option("Opt2", optionCreator);
-        vop1.vote(voter);
-        vop1.vote(voter2);
+        //vop1.vote(voter);
+        //vop1.vote(voter2);
 
         Set<Option> vops = new HashSet<Option>();
         vops.add(vop0);
@@ -71,11 +71,11 @@ public class SurveyController {
         userRepository.save(voter3);
 
         Option vop2 = new Option("Opt3", optionCreator);
-        vop2.vote(voter);
+//        vop2.vote(voter);
         Option vop3 = new Option("Opt4", optionCreator);
-        vop3.vote(voter);
-        vop3.vote(voter2);
-        vop3.vote(voter3);
+//        vop3.vote(voter);
+//        vop3.vote(voter2);
+//        vop3.vote(voter3);
 
         Set<Option> vops2 = new HashSet<Option>();
         vops2.add(vop2);

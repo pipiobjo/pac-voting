@@ -18,7 +18,7 @@ public interface SurveyGraphRepository extends GraphRepository<Survey> {
     List<Survey> findAll();
 
     @Query("MATCH (s1:Survey) where s1.surveyId = {surveyId} return s1")
-    List<Survey> findBySurveyId(@Param("surveyId") String surveyId);
+    Survey findBySurveyId(@Param("surveyId") String surveyId);
 
 
    //get the count of all votes for a survey

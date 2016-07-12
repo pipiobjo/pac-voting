@@ -105,6 +105,7 @@
 		</pluginManagement>
 
 	</build>
+	<!-- 
 	<repositories>
 		<repository>
 			<id>spring-snapshots</id>
@@ -122,7 +123,7 @@
 				<enabled>false</enabled>
 			</snapshots>
 		</repository>
-		<repository>
+		<repositorey>
 			<id>spring-releases</id>
 			<name>Spring Releases</name>
 			<url>http://repo.spring.io/libs-release-local</url>
@@ -131,6 +132,6 @@
 			</snapshots>
 		</repository>
 	</repositories>
-	
+	 -->
 	
 </project>

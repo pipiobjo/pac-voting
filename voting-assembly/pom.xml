@@ -55,7 +55,7 @@
 
 		<dependency>
 			<groupId>com.prodyna.pac.bp</groupId>
-			<artifactId>support-monitor-dashboard</artifactId>
+			<artifactId>support-monitor</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 

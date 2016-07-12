@@ -1,34 +1,20 @@
 package com.prodyna.pac.service;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
-import com.prodyna.pac.jsonResources.SurveyResource;
-import com.prodyna.pac.jsonResources.UserResource;
-import com.prodyna.pac.model.Option;
-import com.prodyna.pac.model.Survey;
-import com.prodyna.pac.model.VotingUser;
-import org.junit.Assert;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.hateoas.Link;
-import org.springframework.hateoas.PagedResources;
-import org.springframework.hateoas.Resource;
-import org.springframework.hateoas.hal.Jackson2HalModule;
-import org.springframework.http.*;
-import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
 
-import java.net.URI;
-import java.util.*;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.prodyna.pac.model.Survey;
+import com.prodyna.pac.service.persistence.SurveyPersistenceService;
 
 /**
  * Created by bjoern on 29.02.16.

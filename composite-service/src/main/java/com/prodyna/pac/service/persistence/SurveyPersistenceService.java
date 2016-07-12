@@ -1,13 +1,11 @@
-package com.prodyna.pac.service;
+package com.prodyna.pac.service.persistence;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
-import com.prodyna.pac.jsonResources.SurveyResource;
-import com.prodyna.pac.jsonResources.UserResource;
-import com.prodyna.pac.model.Option;
-import com.prodyna.pac.model.Survey;
-import org.junit.Assert;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,12 +24,20 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.*;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.prodyna.pac.jsonResources.SurveyResource;
+import com.prodyna.pac.jsonResources.UserResource;
+import com.prodyna.pac.model.Option;
+import com.prodyna.pac.model.Survey;
 
 /**
- * Created by bjoern on 06.06.16.
+ * Survey Service to call with persistence layer, no business logic
+ * Created by bjoern.
  */
 @Component
 public class SurveyPersistenceService {
@@ -77,12 +83,11 @@ public class SurveyPersistenceService {
         if (responseEntity.getStatusCode() == HttpStatus.OK) {
 
             Resources<Resource<Survey>> body = responseEntity.getBody();
-            List<Resource<Survey>> surveyResourceList = new ArrayList(body.getContent());
+            List<Resource<Survey>> surveyResourceList = new ArrayList<>(body.getContent());
             surveyResource = surveyResourceList.get(0);
             resultSurvey = surveyResource.getContent();
         }
         // get options
-        List<Link> links = surveyResource.getLinks();
         // Assert.assertNotNull("Expecting a links object", links);
         Link options = surveyResource.getLink("options");
         String optionURL = options.getHref();
@@ -142,7 +147,6 @@ public class SurveyPersistenceService {
         List<Survey> resultSurveys = new ArrayList<>();
         ServiceInstance votingService = loadBalancer.choose("core-service-voting");
         String votingpersistenServiceURL = votingService.getUri() + FIND_ALL_SURVEYS_REQ_URL_EXTENSION_TEMPLATE;
-        ;
 
 
         ResponseEntity<Resources<Survey>> responseEntity = restTemplate.exchange(
@@ -161,5 +165,11 @@ public class SurveyPersistenceService {
         return resultSurveys;
 
     }
+    @HystrixCommand
+    @Transactional
+	public Survey voteSurvey(String surveyId, String optionId, String userId) {
+    	ServiceInstance votingService = loadBalancer.choose("core-service-voting");
+    	String votingpersistenServiceURL = votingService.getUri() + FIND_ALL_SURVEYS_REQ_URL_EXTENSION_TEMPLATE;
+	}
 
 }

@@ -18,13 +18,13 @@ public class User {
 
     private String userId;
 
-    @Relationship(type = "VOTED_OPTION", direction = Relationship.UNDIRECTED)
+    @Relationship(type = "OPTION_VOTED_BY", direction = Relationship.INCOMING)
     private Set<Option> votes;
 
-    @Relationship(type="SURVEY_CREATOR", direction = Relationship.UNDIRECTED)
+    @Relationship(type="SURVEY_CREATED_BY", direction = Relationship.INCOMING)
     private Set<Survey> createdSurveys;
 
-    @Relationship(type = "OPTION_CREATOR", direction = Relationship.UNDIRECTED)
+    @Relationship(type = "OPTION_CREATOR", direction = Relationship.INCOMING)
     private Set<Option> ceatedOptions;
 
 
@@ -48,12 +48,12 @@ public class User {
     }
 
     //OPTIONS
-    @Relationship(type = "VOTED_OPTION", direction = Relationship.UNDIRECTED)
+    @Relationship(type = "OPTION_VOTED_BY", direction = Relationship.INCOMING)
     public void setVotes(Set<Option> votes){
         this.votes = votes;
     }
 
-    @Relationship(type = "VOTED_OPTION", direction = Relationship.UNDIRECTED)
+    @Relationship(type = "OPTION_VOTED_BY", direction = Relationship.INCOMING)
     public Set<Option> getVotes(){
 
         return this.votes;
@@ -61,7 +61,7 @@ public class User {
 
 
     //Created Surveys
-    @Relationship(type="SURVEY_CREATOR", direction = Relationship.UNDIRECTED)
+    @Relationship(type="SURVEY_CREATED_BY", direction = Relationship.UNDIRECTED)
     public Set<Survey> getCreatedSurveys(){
 
         return createdSurveys;
@@ -72,12 +72,12 @@ public class User {
     }
 
     //Created Options
-    @Relationship(type = "OPTION_CREATOR", direction = Relationship.UNDIRECTED)
+    @Relationship(type = "OPTION_CREATED_BY", direction = Relationship.UNDIRECTED)
     public Set<Option> getCreatedOptions(){
         return this.ceatedOptions;
     }
 
-    @Relationship(type = "OPTION_CREATOR", direction = Relationship.UNDIRECTED)
+    @Relationship(type = "OPTION_CREATED_BY", direction = Relationship.UNDIRECTED)
     public void setCreatedOptions(Set<Option> createdOptions){
         this.ceatedOptions = createdOptions;
     }

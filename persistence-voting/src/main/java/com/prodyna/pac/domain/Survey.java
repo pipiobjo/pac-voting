@@ -21,12 +21,12 @@ public class Survey {
     private Long grapthId;
 
 
-    @Relationship(type="VOTING_OPTIONS", direction = Relationship.UNDIRECTED)
+    @Relationship(type="SURVEY_HAS_VOTING_OPTIONS", direction = Relationship.OUTGOING)
     public
     Set<Option> options = new HashSet<Option>();
 
 
-    @Relationship(type="SURVEY_CREATOR", direction = Relationship.UNDIRECTED)
+    @Relationship(type="SURVEY_CREATED_BY", direction = Relationship.OUTGOING)
     public User creator;
 
     /**
@@ -90,12 +90,10 @@ public class Survey {
         this.options = options;
     }
 
-    @Relationship(type="SURVEY_CREATOR", direction = Relationship.UNDIRECTED)
     public User getCreator() {
         return creator;
     }
 
-    @Relationship(type="SURVEY_CREATOR", direction = Relationship.UNDIRECTED)
     public void setCreator(User creator) {
 
         this.creator = creator;
