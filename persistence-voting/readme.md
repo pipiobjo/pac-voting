@@ -59,7 +59,12 @@ Exception in thread "main" java.lang.UnsupportedClassVersionError: com/prodyna/p
 
 
 Um eine spezifische Umgebung auszuwählen ist der ein einfacher Parameter notwendig
-``` java -jar -Dspring.profiles.active=dev persistence-voting-*.jar ```
+
+```bash 
+
+java -jar -Dspring.profiles.active=dev persistence-voting-*.jar 
+
+```
 
 
 
