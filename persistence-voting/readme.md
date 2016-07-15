@@ -44,24 +44,27 @@ Setup a ne4j installation
 ## Start der Applikation 
 
 ```bash 
+
 	java -jar -Dspring.profiles.active=dev persistence-voting-*.jar
+
 ```
 
 Starten mit einer älteren Java Version -> fail fast
 
-```
+```bash
+
 	/jdk1.7.0_79/jre/bin/java -jar persistence-voting-0.0.1-SNAPSHOT.jar 
 	Exception in thread "main" java.lang.UnsupportedClassVersionError: com/prodyna/pac/main/PersistenceApplication : Unsupported major.minor version 52.0
 
 ```
 
-
-
 Um eine spezifische Umgebung auszuwählen ist der ein einfacher Parameter notwendig
 
 
 ```bash 
+
 	java -jar -Dspring.profiles.active=dev persistence-voting-*.jar
+
 ```
 
 
