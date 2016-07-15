@@ -59,6 +59,7 @@ Starten mit einer älteren Java Version -> fail fast
 
 Um eine spezifische Umgebung auszuwählen ist der ein einfacher Parameter notwendig
 
+
 ```bash 
 	java -jar -Dspring.profiles.active=dev persistence-voting-*.jar
 ```
