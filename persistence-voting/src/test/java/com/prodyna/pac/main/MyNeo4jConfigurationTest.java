@@ -1,4 +1,4 @@
-package com.prodyna.pac.config;
+package com.prodyna.pac.main;
 
 import org.neo4j.ogm.session.Session;
 import org.neo4j.ogm.session.SessionFactory;
@@ -21,7 +21,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @ComponentScan({"com.prodyna.pac", "com.prodyna.pac.repo", "com.prodyna.domain", "com.prodyna.controller"})
 public class MyNeo4jConfigurationTest extends Neo4jConfiguration {
 
-
 	@Override
 	public SessionFactory getSessionFactory() {
 		return new SessionFactory(getConfiguration(), "com.prodyna.pac.domain");
@@ -32,7 +31,10 @@ public class MyNeo4jConfigurationTest extends Neo4jConfiguration {
         org.neo4j.ogm.config.Configuration config = new org.neo4j.ogm.config.Configuration();
         config
                 .driverConfiguration()
-                .setDriverClassName("org.neo4j.ogm.drivers.embedded.driver.EmbeddedDriver");
+                .setDriverClassName("org.neo4j.ogm.drivers.embedded.driver.EmbeddedDriver")
+                .setURI("file:///tmp/neo4j.db_voting_test")
+                ;
+        		
         return config;
 }
 

@@ -100,12 +100,11 @@ public class Survey {
     }
 
 
-
     public String toString() {
         String results = title + "'s Options include\n";
         if (options != null) {
             for (Option vop : options) {
-                results += "\t- OptionId" + vop.optionId + "\n";
+                results += "\t- OptionId" + vop.getOptionId() + "\n";
             }
         }
         results += "\t creator=" + this.creator.toString();

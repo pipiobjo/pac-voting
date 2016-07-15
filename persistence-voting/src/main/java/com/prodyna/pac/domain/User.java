@@ -24,7 +24,7 @@ public class User {
     @Relationship(type="SURVEY_CREATED_BY", direction = Relationship.INCOMING)
     private Set<Survey> createdSurveys;
 
-    @Relationship(type = "OPTION_CREATOR", direction = Relationship.INCOMING)
+    @Relationship(type = "OPTION_CREATED_BY", direction = Relationship.INCOMING)
     private Set<Option> ceatedOptions;
 
 
@@ -44,16 +44,14 @@ public class User {
     }
 
     public String toString(){
-        return "UserId=" + String.valueOf(userId);
+        return "UserId=" + userId;
     }
 
-    //OPTIONS
-    @Relationship(type = "OPTION_VOTED_BY", direction = Relationship.INCOMING)
+    //Voted OPTIONS
     public void setVotes(Set<Option> votes){
         this.votes = votes;
     }
 
-    @Relationship(type = "OPTION_VOTED_BY", direction = Relationship.INCOMING)
     public Set<Option> getVotes(){
 
         return this.votes;
@@ -61,7 +59,6 @@ public class User {
 
 
     //Created Surveys
-    @Relationship(type="SURVEY_CREATED_BY", direction = Relationship.UNDIRECTED)
     public Set<Survey> getCreatedSurveys(){
 
         return createdSurveys;
@@ -71,13 +68,15 @@ public class User {
         this.createdSurveys = createdSurveys;
     }
 
+    
+    
     //Created Options
-    @Relationship(type = "OPTION_CREATED_BY", direction = Relationship.UNDIRECTED)
+    @Relationship(type = "OPTION_CREATED_BY", direction = Relationship.INCOMING)
     public Set<Option> getCreatedOptions(){
         return this.ceatedOptions;
     }
 
-    @Relationship(type = "OPTION_CREATED_BY", direction = Relationship.UNDIRECTED)
+    @Relationship(type = "OPTION_CREATED_BY", direction = Relationship.INCOMING)
     public void setCreatedOptions(Set<Option> createdOptions){
         this.ceatedOptions = createdOptions;
     }

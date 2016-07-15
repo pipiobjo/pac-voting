@@ -17,7 +17,7 @@ public interface SurveyGraphRepository extends GraphRepository<Survey> {
 
     List<Survey> findAll();
 
-    @Query("MATCH (s1:Survey) where s1.surveyId = {surveyId} return s1")
+    //@Query("MATCH (s1:Survey) where s1.surveyId = {surveyId} return s1")
     Survey findBySurveyId(@Param("surveyId") String surveyId);
 
 

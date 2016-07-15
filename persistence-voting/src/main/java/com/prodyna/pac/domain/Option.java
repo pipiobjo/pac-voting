@@ -14,20 +14,20 @@ import org.neo4j.ogm.annotation.Relationship;
 @NodeEntity
 public class Option {
 	@GraphId
-	Long graphId;
+	private Long graphId;
 
-	String optionId;
+	private String optionId;
 
-	String description;
+	private String description;
 
 	@Relationship(type = "OPTION_CREATED_BY", direction = Relationship.OUTGOING)
-	public User creator;
+	private User creator;
 
-	@Relationship(type = "VOTED_BY", direction = Relationship.OUTGOING)
-	public Set<User> voters = new HashSet<User>();
+	@Relationship(type = "OPTION_VOTED_BY", direction = Relationship.OUTGOING)
+	private Set<User> voters = new HashSet<User>();
 
 	@Relationship(type="SURVEY_HAS_VOTING_OPTIONS", direction = Relationship.INCOMING)
-	public Set<Survey> surveysAssigned = new HashSet<>();
+	private Set<Survey> surveysAssigned = new HashSet<>();
 	
 	
 	public Option() {
@@ -86,12 +86,12 @@ public class Option {
 		this.creator = creator;
 	}
 
-	@Relationship(type = "VOTED_BY", direction = Relationship.OUTGOING)
+	@Relationship(type = "OPTION_VOTED_BY", direction = Relationship.OUTGOING)
 	public Set<User> getVoters() {
 		return this.voters;
 	}
 
-	@Relationship(type = "VOTED_BY", direction = Relationship.OUTGOING)
+	@Relationship(type = "OPTION_VOTED_BY", direction = Relationship.OUTGOING)
 	public void setVoters(Set<User> voters) {
 		this.voters = voters;
 	}
