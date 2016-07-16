@@ -41,6 +41,9 @@ zuul:
       path: /user/**
       #url: http://localhost:9999/uaa/user
       serviceId: support-auth
+    uaa:
+      path: /uaa/**
+      serviceId: support-auth
   debug:
      request: true
 

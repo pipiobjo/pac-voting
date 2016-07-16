@@ -57,3 +57,25 @@ Thumbs.db
 **/.settings
 **/.recommenders
 **/.sonarlint/
+
+
+
+
+### node
+npm-debug.log
+voting-ui/etc/
+voting-ui/node/
+voting-ui/node_modules/
+voting-ui/npm-debug.log
+### typings
+voting-ui/typings/
+### coverage
+voting-ui/coverage/
+### docs
+voting-ui/doc/
+### dist
+voting-ui/src/main/resources/static/
+
+
+
+
