@@ -27,7 +27,7 @@ public class SurveyController {
     }
     
     @RequestMapping(value = "/vote/surveys/{surveyId}/option/{optionId}/users/{userId}", method = RequestMethod.POST)
-    public List<Survey> voteOption(@PathVariable("surveyId") String surveyId, @PathVariable("optionId") String optionId, @PathVariable("userId") String userId) throws Exception {
+    public Survey voteOption(@PathVariable("surveyId") String surveyId, @PathVariable("optionId") String optionId, @PathVariable("userId") String userId) throws Exception {
         return surveyService.voteSurvey(surveyId, optionId, userId);
     }
     

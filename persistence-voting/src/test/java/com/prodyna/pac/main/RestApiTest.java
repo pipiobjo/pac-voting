@@ -92,7 +92,7 @@ public class RestApiTest {
 	  private int serverPort;
 	
 	@Test
-	public void readBookmarks() throws Exception {
+	public void readHome() throws Exception {
 		 
 //		test disabled connection refused
 //		when().get("/").then().log();

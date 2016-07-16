@@ -1,3 +1,6 @@
 eureka:
     client:
         enabled: false
+
+info:
+  component: Persistence API 
