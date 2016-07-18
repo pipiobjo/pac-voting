@@ -51,9 +51,10 @@ public class SurveyPersistenceServiceImpl implements SurveyPersistenceService {
 
 	@Autowired
 	private LoadBalancerClient loadBalancer;
-/**
- * Setting general Jackson Mappings
- */
+
+	/**
+	 * Setting general Jackson Mappings
+	 */
 	public SurveyPersistenceServiceImpl() {
 
 		ObjectMapper mapper = new ObjectMapper();
@@ -69,8 +70,11 @@ public class SurveyPersistenceServiceImpl implements SurveyPersistenceService {
 
 	}
 
-	/* (non-Javadoc)
-	 * @see com.prodyna.pac.service.persistence.SurveyPersistenceService#getSurveyBySurveyId(java.lang.String)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.prodyna.pac.service.persistence.SurveyPersistenceService#
+	 * getSurveyBySurveyId(java.lang.String)
 	 */
 	@Override
 	@HystrixCommand
@@ -217,8 +221,11 @@ public class SurveyPersistenceServiceImpl implements SurveyPersistenceService {
 		return optionPojo;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.prodyna.pac.service.persistence.SurveyPersistenceService#getSurveyByCreator(java.lang.String)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.prodyna.pac.service.persistence.SurveyPersistenceService#
+	 * getSurveyByCreator(java.lang.String)
 	 */
 	@Override
 	@HystrixCommand
@@ -245,8 +252,11 @@ public class SurveyPersistenceServiceImpl implements SurveyPersistenceService {
 
 	}
 
-	/* (non-Javadoc)
-	 * @see com.prodyna.pac.service.persistence.SurveyPersistenceService#getAllSurveys()
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.prodyna.pac.service.persistence.SurveyPersistenceService#
+	 * getAllSurveys()
 	 */
 	@Override
 	@HystrixCommand
@@ -270,8 +280,12 @@ public class SurveyPersistenceServiceImpl implements SurveyPersistenceService {
 
 	}
 
-	/* (non-Javadoc)
-	 * @see com.prodyna.pac.service.persistence.SurveyPersistenceService#voteSurvey(java.lang.String, java.lang.String, java.lang.String)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.prodyna.pac.service.persistence.SurveyPersistenceService#voteSurvey(
+	 * java.lang.String, java.lang.String, java.lang.String)
 	 */
 	@Override
 	@HystrixCommand
@@ -291,8 +305,12 @@ public class SurveyPersistenceServiceImpl implements SurveyPersistenceService {
 
 	}
 
-	/* (non-Javadoc)
-	 * @see com.prodyna.pac.service.persistence.SurveyPersistenceService#createSurvey(com.prodyna.pac.model.Survey)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.prodyna.pac.service.persistence.SurveyPersistenceService#createSurvey
+	 * (com.prodyna.pac.model.Survey)
 	 */
 	@Override
 	public List<Survey> createSurvey(Survey survey) {
