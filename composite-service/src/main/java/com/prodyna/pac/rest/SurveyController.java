@@ -1,7 +1,6 @@
 package com.prodyna.pac.rest;
 
-import com.prodyna.pac.model.Survey;
-import com.prodyna.pac.service.persistence.SurveyPersistenceService;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -9,7 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import com.prodyna.pac.model.Survey;
+import com.prodyna.pac.service.persistence.SurveyPersistenceService;
 
 /**
  * Exposing the Survey Rest API.
