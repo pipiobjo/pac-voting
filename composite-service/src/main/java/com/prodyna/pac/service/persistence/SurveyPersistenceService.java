@@ -1,12 +1,12 @@
 package com.prodyna.pac.service.persistence;
 
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,11 +15,9 @@ import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.hateoas.Link;
-import org.springframework.hateoas.MediaTypes;
 import org.springframework.hateoas.PagedResources;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.Resources;
-import org.springframework.hateoas.client.Traverson;
 import org.springframework.hateoas.hal.Jackson2HalModule;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -37,7 +35,6 @@ import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.prodyna.pac.model.Option;
 import com.prodyna.pac.model.Survey;
 import com.prodyna.pac.model.VotingUser;
-import com.prodyna.pac.service.persistence.jsonResources.VotingUserResource;
 
 /**
  * Survey Service to call with persistence layer, no business logic Created by
@@ -54,7 +51,9 @@ public class SurveyPersistenceService {
 
 	@Autowired
 	private LoadBalancerClient loadBalancer;
-
+/**
+ * Setting general Jackson Mappings
+ */
 	public SurveyPersistenceService() {
 
 		ObjectMapper mapper = new ObjectMapper();
@@ -74,78 +73,172 @@ public class SurveyPersistenceService {
 	public Survey getSurveyBySurveyId(String surveyId) throws Exception {
 		ServiceInstance votingService = loadBalancer.choose("core-service-voting");
 		String votingpersistenServiceURL = votingService.getUri() + FIND_SURVEY_BY_ID_REQ_URL_EXTENSION_TEMPLATE;
-		String url = votingpersistenServiceURL.replace("{surveyId}", surveyId);
-//
+
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("surveyId", surveyId);
 		Resource<Survey> surveyResource = null;
-//		// get main object
-//
-//		Traverson traverson;
-//		Survey survey = null;
-//		try {
-//			traverson = new Traverson(new URI(url), MediaTypes.HAL_JSON);
-//
-//			survey = traverson.follow("creator", "options").toObject(Survey.class);
-//		} catch (Exception e) {
-//			LOG.error("Error while reading", e);
-//		}
+		// // get main object
+		//
+		// Traverson traverson;
+		// Survey survey = null;
+		// try {
+		// traverson = new Traverson(new URI(url), MediaTypes.HAL_JSON);
+		//
+		// survey = traverson.follow("creator",
+		// "options").toObject(Survey.class);
+		// } catch (Exception e) {
+		// LOG.error("Error while reading", e);
+		// }
 
-		
-		
-		Survey resultSurvey = null;
 		this.restTemplate.getForObject(votingpersistenServiceURL, Survey.class, map);
 		ResponseEntity<Resource<Survey>> responseEntity =
 
 				this.restTemplate.exchange(votingpersistenServiceURL, HttpMethod.GET, null,
 						new ParameterizedTypeReference<Resource<Survey>>() {
 						}, map);
+
+		Survey resultSurvey = null;
 		if (responseEntity.getStatusCode() == HttpStatus.OK) {
 			surveyResource = responseEntity.getBody();
-			resultSurvey = surveyResource.getContent();
+
+			resultSurvey = buildSurveyFromResource(surveyResource);
 		}
-		// get options
-		 Link options = surveyResource.getLink("options");
-		 String optionURL = options.getHref();
-		
-		 ResponseEntity<Resources<Option>> responseEntityOptions =
-		 restTemplate.exchange(optionURL, HttpMethod.GET, null,
-		 new ParameterizedTypeReference<Resources<Option>>() {
-		 });
-		 Resources<Option> optionResources = responseEntityOptions.getBody();
-		 List<Option> surveyOptions = new
-		 ArrayList<>(optionResources.getContent());
-		
-		 resultSurvey.setOptions(surveyOptions);
-		
-		 // get creator
-		
-		 Link creatorLinks = surveyResource.getLink("creator");
-		 String creatorURL = creatorLinks.getHref();
-		
-		 VotingUserResource surveyCreatorRes =
-		 restTemplate.getForObject(creatorURL, VotingUserResource.class, map);
-		
-		 resultSurvey.setCreator(surveyCreatorRes.getContent());
-		
-		 return resultSurvey;
+		return resultSurvey;
 
 	}
 
+	/**
+	 * Build the survey pojo from the hal resources, follow the links
+	 * 
+	 * @param surveyResource
+	 * @return
+	 */
+	private Survey buildSurveyFromResource(Resource<Survey> surveyResource) {
+		// get survey attributes
+		Survey mySurvey = surveyResource.getContent();
+
+		// get options
+		mySurvey = getOptionsForSurvey(surveyResource, mySurvey);
+
+		// get creator
+		mySurvey = getSurveyCreator(surveyResource, mySurvey);
+
+		return mySurvey;
+	}
+
+	/**
+	 * @param map
+	 * @param surveyResource
+	 * @param resultSurvey
+	 */
+	private Survey getSurveyCreator(Resource<Survey> surveyResource, Survey resultSurvey) {
+		Link creatorLinks = surveyResource.getLink("creator");
+		String creatorURL = creatorLinks.getHref();
+
+		ResponseEntity<Resource<VotingUser>> surveyCreatorRes = restTemplate.exchange(creatorURL, HttpMethod.GET, null,
+				new ParameterizedTypeReference<Resource<VotingUser>>() {
+				});
+
+		resultSurvey.setCreator(surveyCreatorRes.getBody().getContent());
+		return resultSurvey;
+	}
+
+	/**
+	 * @param surveyResource
+	 * @param resultSurvey
+	 */
+	private Survey getOptionsForSurvey(Resource<Survey> surveyResource, Survey resultSurvey) {
+		Link options = surveyResource.getLink("options");
+		String optionURL = options.getHref();
+
+		ResponseEntity<Resources<Resource<Option>>> responseEntityOptions = restTemplate.exchange(optionURL,
+				HttpMethod.GET, null, new ParameterizedTypeReference<Resources<Resource<Option>>>() {
+				});
+		Resources<Resource<Option>> optionResources = responseEntityOptions.getBody();
+
+		List<Option> resultOptions = new ArrayList<>();
+		List<Resource<Option>> surveyOptions = new ArrayList<>(optionResources.getContent());
+		for (Resource<Option> option : surveyOptions) {
+			Option optionPojo = option.getContent();
+
+			// getting voters
+			optionPojo = getOptionVotersByLink(option, optionPojo);
+
+			// getting creator
+			optionPojo = getOptionCreatorByLink(option, optionPojo);
+
+			resultOptions.add(optionPojo);
+		}
+
+		resultSurvey.setOptions(resultOptions);
+		return resultSurvey;
+	}
+
+	/**
+	 * @param option
+	 * @param optionPojo
+	 * @return
+	 */
+	private Option getOptionVotersByLink(Resource<Option> option, Option optionPojo) {
+		Link voterLinklink = option.getLink("voters");
+		String voterLinkhref = voterLinklink.getHref();
+		ResponseEntity<Resources<Resource<VotingUser>>> creatorResponseEntity = restTemplate.exchange(voterLinkhref,
+				HttpMethod.GET, null, new ParameterizedTypeReference<Resources<Resource<VotingUser>>>() {
+				});
+
+		Set<VotingUser> voters = new HashSet<>();
+		Resources<Resource<VotingUser>> votersResources = creatorResponseEntity.getBody();
+		for (Resource<VotingUser> voterResource : votersResources) {
+			VotingUser votingUser = voterResource.getContent();
+			voters.add(votingUser);
+		}
+		optionPojo.setVoters(voters);
+		return optionPojo;
+	}
+
+	/**
+	 * @param option
+	 * @param optionPojo
+	 */
+	private Option getOptionCreatorByLink(Resource<Option> option, Option optionPojo) {
+		Link creatorLink = option.getLink("creator");
+		String creatorLinkHref = creatorLink.getHref();
+
+		ResponseEntity<Resource<VotingUser>> creatorResponseEntity = restTemplate.exchange(creatorLinkHref,
+				HttpMethod.GET, null, new ParameterizedTypeReference<Resource<VotingUser>>() {
+				});
+		VotingUser creator = creatorResponseEntity.getBody().getContent();
+
+		optionPojo.setCreator(creator);
+		return optionPojo;
+	}
+
+	/**
+	 * 
+	 * @param creator
+	 * @return
+	 */
 	@HystrixCommand
 	public List<Survey> getSurveyByCreator(String creator) {
 		ServiceInstance votingService = loadBalancer.choose("core-service-voting");
 
 		String votingpersistenServiceURL = votingService.getUri() + FIND_SURVEY_BY_OWNER_REQ_URL_EXTENSION_TEMPLATE;
 
-		Map<String, Object> map = new HashMap<String, Object>();
+		Map<String, Object> map = new HashMap<>();
 		map.put("votingUserId", creator);
 
-		ResponseEntity<PagedResources<Survey>> responseEntity = restTemplate.exchange(votingpersistenServiceURL,
-				HttpMethod.GET, null, new ParameterizedTypeReference<PagedResources<Survey>>() {
+		ResponseEntity<Resources<Resource<Survey>>> responseEntity = restTemplate.exchange(votingpersistenServiceURL,
+				HttpMethod.GET, null, new ParameterizedTypeReference<Resources<Resource<Survey>>>() {
 				});
-		PagedResources<Survey> options1 = responseEntity.getBody();
-		return new ArrayList<>(options1.getContent());
+		List<Survey> resultSurvey = new ArrayList<>();
+		Resources<Resource<Survey>> surveyResources = responseEntity.getBody();
+		for (Resource<Survey> surveyRes : surveyResources) {
+			Survey mySurvey = buildSurveyFromResource(surveyRes);
+			resultSurvey.add(mySurvey);
+
+		}
+
+		return resultSurvey;
 
 	}
 
@@ -170,8 +263,6 @@ public class SurveyPersistenceService {
 
 	}
 
-	@HystrixCommand
-	@Transactional
 	/**
 	 * Vote on a survey
 	 * 
@@ -180,6 +271,8 @@ public class SurveyPersistenceService {
 	 * @param userId
 	 * @return
 	 */
+	@HystrixCommand
+	@Transactional
 	public Survey voteSurvey(String surveyId, String optionId, String userId) {
 		ServiceInstance votingService = loadBalancer.choose("core-service-voting");
 
@@ -191,9 +284,8 @@ public class SurveyPersistenceService {
 		String url = votingService.getUri() + VOTE_ON_SURVEY_TEMPLATE;
 
 		ResponseEntity<Survey> response = restTemplate.getForEntity(url, Survey.class, map);
-		Survey survey = response.getBody();
+		return response.getBody();
 
-		return survey;
 	}
 
 	public List<Survey> createSurvey(Survey survey) {
