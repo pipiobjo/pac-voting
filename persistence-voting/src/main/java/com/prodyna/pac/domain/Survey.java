@@ -13,101 +13,100 @@ import java.util.UUID;
  */
 @NodeEntity
 public class Survey {
-    private String description;
-    private String title;
-    private String surveyId;
+	private String description;
+	private String title;
+	private String surveyId;
 
-    @GraphId
-    private Long grapthId;
+	@GraphId
+	private Long grapthId;
 
+	@Relationship(type = "SURVEY_HAS_VOTING_OPTIONS", direction = Relationship.OUTGOING)
+	private Set<Option> options = new HashSet<Option>();
 
-    @Relationship(type="SURVEY_HAS_VOTING_OPTIONS", direction = Relationship.OUTGOING)
-    public
-    Set<Option> options = new HashSet<Option>();
+	@Relationship(type = "SURVEY_CREATED_BY", direction = Relationship.OUTGOING)
+	private User creator;
 
+	/**
+	 *
+	 */
+	public Survey() {
 
-    @Relationship(type="SURVEY_CREATED_BY", direction = Relationship.OUTGOING)
-    public User creator;
+	}
 
-    /**
-     *
-     */
-    public Survey(){
+	/**
+	 *
+	 * @param description
+	 * @param title
+	 * @param options
+	 * @param creator
+	 */
+	public Survey(String description, String title, Set<Option> options, User creator) {
+		this.description = description;
+		this.title = title;
+		this.options = options;
+		this.creator = creator;
+		this.surveyId = UUID.randomUUID().toString();
+	}
 
-    }
+	public String getDescription() {
+		return description;
+	}
 
+	public void setDescription(String description) {
 
-    /**
-     *
-     * @param description
-     * @param title
-     * @param options
-     * @param creator
-     */
-    public Survey(String description, String title, Set<Option> options, User creator){
-        this.description = description;
-        this.title = title;
-        this.options = options;
-        this.creator = creator;
-        this.surveyId = UUID.randomUUID().toString();
-    }
+		this.description = description;
+	}
 
+	public String getTitle() {
 
-    public String getDescription() {
-        return description;
-    }
+		return title;
+	}
 
-    public void setDescription(String description) {
+	public void setTitle(String title) {
 
-        this.description = description;
-    }
+		this.title = title;
+	}
 
-    public String getTitle() {
+	public String getSurveyId() {
 
-        return title;
-    }
+		return this.surveyId;
+	}
 
-    public void setTitle(String title) {
+	public void setId(String surveyId) {
+		this.surveyId = surveyId;
+	}
 
-        this.title = title;
-    }
+	@Relationship(type = "SURVEY_HAS_VOTING_OPTIONS", direction = Relationship.OUTGOING)
+	public Set<Option> getOptions() {
 
-    public String getSurveyId(){
+		return options;
+	}
 
-        return this.surveyId;
-    }
-    public void setId(String surveyId) {
-        this.surveyId = surveyId;
-    }
+	@Relationship(type = "SURVEY_HAS_VOTING_OPTIONS", direction = Relationship.OUTGOING)
+	public void setOptions(Set<Option> options) {
 
-    public Set<Option> getOptions() {
+		this.options = options;
+	}
 
-        return options;
-    }
+	@Relationship(type = "SURVEY_CREATED_BY", direction = Relationship.OUTGOING)
+	public User getCreator() {
+		return creator;
+	}
 
-    public void setOptions(Set<Option> options) {
+	@Relationship(type = "SURVEY_CREATED_BY", direction = Relationship.OUTGOING)
+	public void setCreator(User creator) {
 
-        this.options = options;
-    }
+		this.creator = creator;
+	}
 
-    public User getCreator() {
-        return creator;
-    }
-
-    public void setCreator(User creator) {
-
-        this.creator = creator;
-    }
-
-
-    public String toString() {
-        String results = title + "'s Options include\n";
-        if (options != null) {
-            for (Option vop : options) {
-                results += "\t- OptionId" + vop.getOptionId() + "\n";
-            }
-        }
-        results += "\t creator=" + this.creator.toString();
-        return results;
-    }
+	public String toString() {
+		String results = title + "'s Options include\n";
+		if (options != null) {
+			for (Option vop : options) {
+				results += "\t- OptionId" + vop.getOptionId() + "\n";
+			}
+		}
+		results += "\t creator=" + this.creator.toString();
+		return results;
+	}
 }

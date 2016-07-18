@@ -2,7 +2,9 @@ debug: true
 
 server:
   port: 9999
-  contextPath: /uaa
+  contextPath: /auth
+  use-forward-headers: true
+  error.whitelabel.enabled: false
 
 #security:
 #  user:
@@ -11,7 +13,7 @@ server:
 security:
     # Disable Spring Boot basic authentication
     basic:
-      enabled: false
+      enabled: true
     user:
         password: none
     oauth2:

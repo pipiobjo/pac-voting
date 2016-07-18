@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.junit.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -16,6 +17,7 @@ import com.prodyna.pac.domain.User;
 import com.prodyna.pac.repo.OptionGraphRepository;
 import com.prodyna.pac.repo.SurveyGraphRepository;
 import com.prodyna.pac.repo.UserGraphRepository;
+
 
 /**
  * @author bjoern
@@ -34,11 +36,11 @@ public class SampleDataService {
 	OptionGraphRepository optionRepository;
 
 	public List<Survey> createSampleData() {
-		User surveyCreator = new User("surveyCreator");
-		userRepository.save(surveyCreator);
+		User surveyCreatorPojo = new User("surveyCreator");
+		User surveyCreator = userRepository.save(surveyCreatorPojo);
 
-		User optionCreator = new User("optionCreator");
-		userRepository.save(optionCreator);
+		User optionCreatorPojo = new User("optionCreator");
+		User optionCreator = userRepository.save(optionCreatorPojo);
 		User voter = new User("voter");
 		userRepository.save(voter);
 		User voter2 = new User("voter2");
@@ -50,15 +52,18 @@ public class SampleDataService {
 		// vop1.vote(voter);
 		// vop1.vote(voter2);
 
-		Set<Option> vops = new HashSet<Option>();
+		Set<Option> vops = new HashSet<>();
 		vops.add(vop0);
 		vops.add(vop1);
 
 		String description = "my First survey description text may be this should be a little bit longer to explain something";
 		String title = "My First Survey";
-		Survey myFirstSurvey = new Survey(description, title, vops, surveyCreator);
+		Survey myFirstSurveyPojo = new Survey(description, title, vops, surveyCreator);
+		Assert.assertNotNull("Expecting creator to be set", myFirstSurveyPojo.getCreator());
 
-		surveyRepository.save(myFirstSurvey);
+		surveyRepository.save(myFirstSurveyPojo);
+		Survey myFirstSurvey = surveyRepository.save(myFirstSurveyPojo);
+		Assert.assertNotNull("Expecting creator to be set", myFirstSurvey.getCreator());
 
 		User voter3 = new User("voter3");
 		userRepository.save(voter3);

@@ -1,5 +1,6 @@
 package com.prodyna.pac.main;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -125,11 +126,6 @@ public class Neo4jDataModelTest  {
 		Set<User> voters = changedOpt.getVoters();
 		Assert.assertEquals("Expecting no voters", 0, voters.size());
 		
-		
-		
-		
-		
-		
 	}
 	
 	
@@ -152,9 +148,10 @@ public class Neo4jDataModelTest  {
         List<User> findAll2 = userRepository.findAll();
         Assert.assertTrue("Expecting no user", findAll2.isEmpty());
         
-        
-        
 	}
+	
+	
+	
 	
 	//@Test
 	public void optionCRUDTest(){
@@ -310,10 +307,62 @@ public class Neo4jDataModelTest  {
 	
 	@Test
     public void surveyCrudTest() {
-		initDB();
-		List<Survey> findAll = surveyRepository.findAll();
+		String userId = "surveyCreator";
+		User surveyCreatorPOJO = new User(userId);
+        User surveyCreator = userRepository.save(surveyCreatorPOJO);
+        
+        
+
+        User optionCreatorPOJO = new User(optionCreatorName);
+        User optionCreator = userRepository.save(optionCreatorPOJO);
+        
+        
+        Option vop2 = new Option("Option", optionCreator);
+        Option opt = optionRepository.save(vop2);
 		
-		Assert.assertTrue("Expecting 2 Surveys, but getting " + findAll.size(), findAll.size()==2);
+        Set<Option> options = new HashSet<Option>();
+        options.add(opt);
+        
+        String description = "surveyDescription";
+        String title = "surveyTitle";
+        Survey mySecondSurveyPOJO = new Survey(description, title , options, surveyCreator);
+        Survey survey = surveyRepository.save(mySecondSurveyPOJO);
+        
+        
+        String surveyId = survey.getSurveyId();
+        Assert.assertNotNull("Expecting a generated id", surveyId);
+        
+        String descTest = survey.getDescription();
+        Assert.assertEquals("Expecting same description", description, descTest);
+        
+        String titleTest = survey.getTitle();
+        Assert.assertEquals("Expecting same title",title,  titleTest);
+        
+        User surveyCreatorTest = survey.getCreator();
+        Assert.assertNotNull("Expecting a creator", surveyCreatorTest);
+        Assert.assertEquals("Expecting same userid", surveyCreator.getUserId(), surveyCreatorTest.getUserId());
+        
+        Set<Option> optionsTest = survey.getOptions();
+        Assert.assertNotNull("Expecting options", optionsTest);
+        
+        int testOptionsCount = optionsTest.size();
+        Assert.assertEquals("Expecting one option", 1, testOptionsCount);
+        
+        List<Option> optList = new ArrayList<Option>(optionsTest);
+        Option optionTest = optList.get(0);
+        Assert.assertNotNull("Expecting a option", optionTest);
+        
+        User optionCreatorTest = optionTest.getCreator();
+        Assert.assertNotNull("Expecting option creator", optionCreatorTest);
+        
+        Assert.assertEquals("Expecting correct option creator", optionCreatorName, optionCreatorTest.getUserId());
+        
+        
+        
+		//initDB();
+//		List<Survey> findAll = surveyRepository.findAll();
+		
+//		Assert.assertTrue("Expecting 2 Surveys, but getting " + findAll.size(), findAll.size()==2);
 		
 	}
 	

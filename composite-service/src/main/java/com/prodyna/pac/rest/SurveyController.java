@@ -25,10 +25,21 @@ public class SurveyController {
     public List<Survey> getAllSurvey() throws Exception {
         return surveyService.getAllSurveys();
     }
+
+    
+    @RequestMapping(value = "/surveys", method = RequestMethod.POST)
+    public List<Survey> createSurvey(Survey survey) throws Exception {
+        return surveyService.createSurvey(survey);
+    }
+    
+    
+    
     
     @RequestMapping(value = "/vote/surveys/{surveyId}/option/{optionId}/users/{userId}", method = RequestMethod.POST)
     public Survey voteOption(@PathVariable("surveyId") String surveyId, @PathVariable("optionId") String optionId, @PathVariable("userId") String userId) throws Exception {
         return surveyService.voteSurvey(surveyId, optionId, userId);
     }
+    
+    
     
 }

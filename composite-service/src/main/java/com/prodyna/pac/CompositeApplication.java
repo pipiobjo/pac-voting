@@ -12,11 +12,10 @@ import org.springframework.context.annotation.ComponentScan;
 @EnableCircuitBreaker
 @SpringBootApplication
 @EnableDiscoveryClient
-@ComponentScan({"com.prodyna.pac.service","com.prodyna.pac.util", "com.prodyna.pac.rest"})
+@ComponentScan({"com.prodyna.pac.service","com.prodyna.pac.util", "com.prodyna.pac.rest", "com.prodyna.pac.config"})
 public class CompositeApplication {
     public static void main(String[] args) {
 
         SpringApplication.run(CompositeApplication.class, args);
     }
-
 }

@@ -19,14 +19,14 @@ import org.springframework.web.WebApplicationInitializer;
 
 import java.util.concurrent.ConcurrentHashMap;
 
-//@Ignore("To make Maven happy")
+@Ignore("To make Maven happy")
 public class JettyTest {
     @Rule
     public ExpectedException exception = ExpectedException.none();
 
     @BeforeClass
     public static void startJetty() throws Exception {
-        server = new Server(8080);
+        server = new Server(0);
         Connector connector = new ServerConnector(server);
         server.addConnector(connector);
 

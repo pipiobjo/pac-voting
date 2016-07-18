@@ -1,16 +1,14 @@
-package com.prodyna.pac.sso;
-
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+package com.prodyna.pac.sso.rest;
 
 import java.security.Principal;
+
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * Created by bjoern on 02.07.16.
  */
 @org.springframework.stereotype.Controller
-@CrossOrigin(maxAge=3600)
 public class Controller {
     @RequestMapping("/user")
     @ResponseBody

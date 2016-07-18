@@ -1,4 +1,4 @@
-package com.shardis.ui.config;
+package com.prodyna.pac.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
@@ -12,7 +12,9 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Res
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 
 /**
- * Created by Tomasz Kucharzyk
+ * 
+ * @author bjoern
+ *
  */
 @Configuration
 @EnableResourceServer
@@ -37,7 +39,7 @@ public class SecurityConfig implements ResourceServerConfigurer {
             .authorizeRequests()
             .antMatchers("/auth/**").permitAll()
             .antMatchers("/api/**").permitAll()
-            .antMatchers("/test").authenticated()
+            //.antMatchers("/test").authenticated()
             .anyRequest().permitAll()
             .and()
             .csrf().disable()

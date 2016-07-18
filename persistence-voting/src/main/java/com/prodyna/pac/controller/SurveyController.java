@@ -54,6 +54,12 @@ public class SurveyController {
         optionRepository.deleteAll();
     }
 
+    @RequestMapping(value="/findSurveyById/{surveyId}", method = RequestMethod.GET)
+    public Survey getSurveyById(@PathVariable("surveyId")String surveyId){
+    	Survey survey = surveyRepository.findBySurveyId(surveyId);
+    	return survey;
+    	
+    }
 }
 
 

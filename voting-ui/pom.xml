@@ -28,6 +28,26 @@
 		<spring-boot.version>1.3.5.RELEASE</spring-boot.version>
 	</properties>
 
+    <profiles>
+        <profile>
+            <id>prod</id>
+            <properties>
+                <npm.build.command>run build:prod</npm.build.command>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+        <profile>
+            <id>dev</id>
+            <properties>
+                <npm.build.command>run build:dev</npm.build.command>
+            </properties>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+        </profile>
+    </profiles>
 
 
 
@@ -55,6 +75,13 @@
 
 
 	<dependencies>
+		<dependency>
+			<groupId>com.shardis</groupId>
+			<artifactId>voting-common</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
@@ -88,8 +115,11 @@
 			<artifactId>h2</artifactId>
 			<scope>runtime</scope>
 		</dependency>
-		<!-- <dependency> <groupId>org.projectlombok</groupId> <artifactId>lombok</artifactId> 
-			</dependency> -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.16.8</version>
+		</dependency>
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
