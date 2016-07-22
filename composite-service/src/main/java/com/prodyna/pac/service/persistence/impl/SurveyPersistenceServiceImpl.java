@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,6 +80,9 @@ public class SurveyPersistenceServiceImpl implements SurveyPersistenceService {
 	@Override
 	@HystrixCommand
 	public Survey getSurveyBySurveyId(String surveyId) {
+		if(StringUtils.isBlank(surveyId)){
+			return null;
+		}
 		ServiceInstance votingService = loadBalancer.choose("core-service-voting");
 		String votingpersistenServiceURL = votingService.getUri() + FIND_SURVEY_BY_ID_REQ_URL_EXTENSION_TEMPLATE;
 
@@ -256,7 +260,7 @@ public class SurveyPersistenceServiceImpl implements SurveyPersistenceService {
 	@HystrixCommand
 	public List<Survey> getAllSurveys() {
 		List<Survey> resultSurveys = new ArrayList<>();
-		ServiceInstance votingService = loadBalancer.choose("core-service-voting");
+		ServiceInstance votingService = loadBalancer.choose("CORE-SERVICE-VOTING");
 		String votingpersistenServiceURL = votingService.getUri() + FIND_ALL_SURVEYS_REQ_URL_EXTENSION_TEMPLATE;
 
 		ResponseEntity<Resources<Survey>> responseEntity = restTemplate.exchange(votingpersistenServiceURL,
@@ -267,6 +271,9 @@ public class SurveyPersistenceServiceImpl implements SurveyPersistenceService {
 
 		for (Survey s : simpleSurveys) {
 			Survey surveyBySurveyId = getSurveyBySurveyId(s.getSurveyId());
+			if(surveyBySurveyId==null){
+				continue;
+			}
 			resultSurveys.add(surveyBySurveyId);
 		}
 

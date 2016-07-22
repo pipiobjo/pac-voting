@@ -35,7 +35,7 @@ public class VotingServiceImpl implements VotingService {
 	RoleService roleService;
 
 	@Override
-	public List<Survey> getAllSurveys(ExecutingUser eU) throws ActionNotAllowedExcpetion  {
+	public List<Survey> getAllSurveys(ExecutingUser eU) throws VotingServiceException  {
 		if(!roleService.isUser(eU)){
 			throw new ActionNotAllowedExcpetion("You are not allowed to vote");
 		}
@@ -77,7 +77,7 @@ public class VotingServiceImpl implements VotingService {
 	 */
 	@Override
 	public Survey voteSurvey(String surveyId, String optionId, String userId, ExecutingUser eU)
-			throws ActionNotAllowedExcpetion {
+			throws VotingServiceException {
 		if(!roleService.isUser(eU)){
 			throw new ActionNotAllowedExcpetion("You are not allowed to vote");
 		}
