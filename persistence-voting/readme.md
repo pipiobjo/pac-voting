@@ -35,6 +35,52 @@ http://localhost:8180/votes
 
 
 
+## Basis CRUD am Beispiel eines Users
+
+
+Get Users
+
+```bash 
+
+	curl -i -X GET -H "Content-Type:application/json" http://localhost:8180/users
+
+```
+
+
+Create User
+
+
+```bash 
+
+	curl -i -X POST -H "Content-Type:application/json" -d '{  "userId" : "curlGeneratedUser"}' http://localhost:8180/users
+
+```
+
+
+Update User 
+
+* Update userId
+* Hinzufügen der Verbindung zu einer Option 
+
+```bash 
+
+	curl -i -X PUT -H "Content-Type:application/json" -d '{"userId" : "curlUserIsNowOptionGenerator", "createdOptions" : [ {"optionId" : "c090ed2d-6de9-4ba2-bc41-e1b9f5ba1e5d", "description" : "Opt4" }, { "optionId" : "267d90ef-f247-4ab9-a94d-e5edfac42e02", "description" : "Opt3"}]}' http://localhost:8180/users/2
+
+
+```
+
+
+Delete User
+
+```bash 
+
+	curl -i -X DELETE -H "Content-Type:application/json" http://localhost:8180/users/2
+
+
+```
+
+
+
 
 Setup a ne4j installation
 

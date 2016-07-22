@@ -1,12 +1,6 @@
 package com.prodyna.pac.controller;
 
 import java.io.IOException;
-
-/**
- * Created by bjoern on 11.02.16.
-**/
-
-import java.util.List;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletResponse;

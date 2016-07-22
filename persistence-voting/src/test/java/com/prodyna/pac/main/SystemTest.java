@@ -20,7 +20,7 @@ import org.springframework.web.WebApplicationInitializer;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Ignore("To make Maven happy")
-public class JettyTest {
+public class SystemTest {
     @Rule
     public ExpectedException exception = ExpectedException.none();
 

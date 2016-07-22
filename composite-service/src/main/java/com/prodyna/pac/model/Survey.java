@@ -1,9 +1,8 @@
 package com.prodyna.pac.model;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import org.springframework.hateoas.Resource;
-
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by bjoern on 11.02.16.
@@ -13,8 +12,7 @@ public class Survey {
     private String description;
     private String title;
 
-    public
-    List<Option> options = new ArrayList<>();
+    public   List<Option> options = new ArrayList<>();
 
 
     public VotingUser creator;

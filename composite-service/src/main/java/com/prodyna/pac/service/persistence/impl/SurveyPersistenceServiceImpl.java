@@ -24,7 +24,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
@@ -34,19 +34,22 @@ import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.prodyna.pac.model.Option;
 import com.prodyna.pac.model.Survey;
 import com.prodyna.pac.model.VotingUser;
+import com.prodyna.pac.service.exception.PersistenceException;
 import com.prodyna.pac.service.persistence.SurveyPersistenceService;
 
 /**
  * Survey Service to call with persistence layer, no business logic Created by
  * bjoern.
  */
-@Component
+@Service
 public class SurveyPersistenceServiceImpl implements SurveyPersistenceService {
 	private static final String FIND_SURVEY_BY_ID_REQ_URL_EXTENSION_TEMPLATE = "/surveys/search/findBySurveyId?surveyId={surveyId}";
 	private static final String FIND_ALL_SURVEYS_REQ_URL_EXTENSION_TEMPLATE = "/surveys";
 	private static final String FIND_SURVEY_BY_OWNER_REQ_URL_EXTENSION_TEMPLATE = "/surveys/search/findByCreator?{votingUserId}";
 	private static final String VOTE_ON_SURVEY_TEMPLATE = "/vote/surveys/{surveyId}/option/{optionId}/users/{userId}";
+	private static final String FIND_USER_BY_ID_REQ_URL_EXTENSION_TEMPLATE = "/users/search/findByUserId?userId={userId}";
 	private static final Logger LOG = LoggerFactory.getLogger(SurveyPersistenceServiceImpl.class);
+	private static final String CREATE_SURVEY_URL_EXTENSION_TEMPLATE = "/surveys";
 	private final RestTemplate restTemplate;
 
 	@Autowired
@@ -70,15 +73,12 @@ public class SurveyPersistenceServiceImpl implements SurveyPersistenceService {
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.prodyna.pac.service.persistence.SurveyPersistenceService#
-	 * getSurveyBySurveyId(java.lang.String)
+	/**
+	 *
 	 */
 	@Override
 	@HystrixCommand
-	public Survey getSurveyBySurveyId(String surveyId) throws Exception {
+	public Survey getSurveyBySurveyId(String surveyId) {
 		ServiceInstance votingService = loadBalancer.choose("core-service-voting");
 		String votingpersistenServiceURL = votingService.getUri() + FIND_SURVEY_BY_ID_REQ_URL_EXTENSION_TEMPLATE;
 
@@ -221,11 +221,8 @@ public class SurveyPersistenceServiceImpl implements SurveyPersistenceService {
 		return optionPojo;
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
 	 * 
-	 * @see com.prodyna.pac.service.persistence.SurveyPersistenceService#
-	 * getSurveyByCreator(java.lang.String)
 	 */
 	@Override
 	@HystrixCommand
@@ -252,15 +249,12 @@ public class SurveyPersistenceServiceImpl implements SurveyPersistenceService {
 
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
 	 * 
-	 * @see com.prodyna.pac.service.persistence.SurveyPersistenceService#
-	 * getAllSurveys()
 	 */
 	@Override
 	@HystrixCommand
-	public List<Survey> getAllSurveys() throws Exception {
+	public List<Survey> getAllSurveys() {
 		List<Survey> resultSurveys = new ArrayList<>();
 		ServiceInstance votingService = loadBalancer.choose("core-service-voting");
 		String votingpersistenServiceURL = votingService.getUri() + FIND_ALL_SURVEYS_REQ_URL_EXTENSION_TEMPLATE;
@@ -305,17 +299,84 @@ public class SurveyPersistenceServiceImpl implements SurveyPersistenceService {
 
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
 	 * 
-	 * @see
-	 * com.prodyna.pac.service.persistence.SurveyPersistenceService#createSurvey
-	 * (com.prodyna.pac.model.Survey)
 	 */
+	@HystrixCommand
 	@Override
-	public List<Survey> createSurvey(Survey survey) {
-		// TODO Auto-generated method stub
-		return null;
+	public Survey createSurvey(Survey survey) throws PersistenceException {
+		ServiceInstance votingService = loadBalancer.choose("core-service-voting");
+
+		Map<String, Object> map = new HashMap<String, Object>();
+
+		String url = votingService.getUri() + CREATE_SURVEY_URL_EXTENSION_TEMPLATE;
+
+		Survey createdSurvey = restTemplate.postForObject(url, survey, Survey.class);
+		if (createdSurvey != null) {
+			return createdSurvey;
+		}
+		throw new PersistenceException("Expecting a created Survey but response is not parsable or no survey returned");
+	}
+
+	/**
+	 * 
+	 */
+	@HystrixCommand
+	@Override
+	public Survey updateSurvey(Survey survey) throws PersistenceException {
+
+		ServiceInstance votingService = loadBalancer.choose("core-service-voting");
+		String votingpersistenServiceURL = votingService.getUri() + FIND_SURVEY_BY_ID_REQ_URL_EXTENSION_TEMPLATE;
+
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("surveyId", survey.getSurveyId());
+		Resource<Survey> surveyResource = null;
+
+		this.restTemplate.getForObject(votingpersistenServiceURL, Survey.class, map);
+		ResponseEntity<Resource<Survey>> responseEntity =
+
+				this.restTemplate.exchange(votingpersistenServiceURL, HttpMethod.GET, null,
+						new ParameterizedTypeReference<Resource<Survey>>() {
+						}, map);
+
+		Survey updatedSurvey = null;
+		if (responseEntity.getStatusCode() == HttpStatus.OK) {
+			surveyResource = responseEntity.getBody();
+
+			Link link = surveyResource.getLink("self");
+			String href = link.getHref();
+
+			restTemplate.put(href, survey, Survey.class);
+
+			updatedSurvey = getSurveyBySurveyId(survey.getSurveyId());
+			if (updatedSurvey != null) {
+				return updatedSurvey;
+			}
+			throw new PersistenceException(
+					"Expecting a created Survey but response is not parsable or no survey returned");
+		}
+		throw new PersistenceException("Expecting a ok response from psersistence service");
+	}
+
+	/**
+	 * 
+	 */
+	@HystrixCommand
+	@Override
+	public VotingUser getUser(String executingUser) {
+		ServiceInstance votingService = loadBalancer.choose("core-service-voting");
+
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("userId", executingUser);
+
+		String url = votingService.getUri() + FIND_USER_BY_ID_REQ_URL_EXTENSION_TEMPLATE;
+
+		ResponseEntity<VotingUser> response = restTemplate.getForEntity(url, VotingUser.class, map);
+		if (response.getBody() != null) {
+			return response.getBody();
+		} else {
+			return null;
+		}
 	}
 
 }

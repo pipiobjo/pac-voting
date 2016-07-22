@@ -2,64 +2,27 @@ package com.prodyna.pac.model;
 
 import java.util.Set;
 
-/**
- * Created by bjoern on 07.03.16.
- */
-public class Survey {
-    private String description;
-    private String title;
-    private Set<VotingOption> options;
-    private VotingUser creator;
-    private String surveyId;
+public interface Survey {
 
-    public Survey(){}
-    /**
-     * @param description
-     * @param title
-     * @param options
-     * @param creator
-     */
-    public Survey(String description, String title, Set<VotingOption> options, VotingUser creator) {
-        this.description = description;
-        this.title = title;
-        this.options = options;
-        this.creator = creator;
-    }
+	String getDescription();
 
-    public String getDescription() {
-        return description;
-    }
+	void setDescription(String description);
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+	String getTitle();
 
-    public String getTitle() {
-        return title;
-    }
+	void setTitle(String title);
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
+	String getSurveyId();
 
-    public Set<VotingOption> getOptions() {
-        return options;
-    }
+	void setId(String surveyId);
 
-    public void setOptions(Set<VotingOption> options) {
-        this.options = options;
-    }
+	Set<Class<? extends Option>> getOptions();
 
-    public VotingUser getCreator() {
-        return creator;
-    }
+	void setOptions(Set<Class<? extends Option>> options);
 
-    public void setCreator(VotingUser creator) {
-        this.creator = creator;
-    }
+	Class<? extends User> getCreator();
 
-    public String getSurveyId() {
-        return this.surveyId;
-    }
+	void setCreator(Class<? extends User> creator);
 
+	String toString();
 }

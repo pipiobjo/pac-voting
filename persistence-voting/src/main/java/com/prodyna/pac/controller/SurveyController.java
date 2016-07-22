@@ -1,25 +1,20 @@
 package com.prodyna.pac.controller;
 
-/**
- * Created by bjoern on 11.02.16.
- */
+import java.util.List;
 
-import com.prodyna.pac.domain.Option;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.prodyna.pac.domain.Survey;
-import com.prodyna.pac.domain.User;
 import com.prodyna.pac.repo.OptionGraphRepository;
 import com.prodyna.pac.repo.SurveyGraphRepository;
 import com.prodyna.pac.repo.UserGraphRepository;
 import com.prodyna.pac.service.SampleDataService;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.*;
-import java.util.concurrent.atomic.AtomicLong;
 
 @EnableAutoConfiguration
 @RestController
@@ -40,7 +35,6 @@ public class SurveyController {
     @RequestMapping(value = "/createRandomSurvey", method = RequestMethod.GET)
     public @ResponseBody
     List<Survey> createRandomSurvey() {
-        System.out.println("==== in Survey ====");
         return sampleService.createSampleData();
            }
 

@@ -1,7 +1,6 @@
 package com.prodyna.pac.domain;
 
 import java.util.HashSet;
-
 import java.util.Set;
 import java.util.UUID;
 
@@ -12,7 +11,7 @@ import org.neo4j.ogm.annotation.Relationship;
  * Created by bjoern on 07.03.16.
  */
 @NodeEntity
-public class Option {
+public class Option{
 	@GraphId
 	private Long graphId;
 

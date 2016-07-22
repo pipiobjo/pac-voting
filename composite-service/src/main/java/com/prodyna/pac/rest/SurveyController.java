@@ -9,8 +9,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.prodyna.pac.model.ExecutingUser;
 import com.prodyna.pac.model.Survey;
 import com.prodyna.pac.service.persistence.SurveyPersistenceService;
+import com.prodyna.pac.service.voting.VotingService;
 
 /**
  * Exposing the Survey Rest API.
@@ -18,29 +20,47 @@ import com.prodyna.pac.service.persistence.SurveyPersistenceService;
 @RestController
 public class SurveyController {
 
-    @Autowired
-    private SurveyPersistenceService surveyService;
+	@Autowired
+	private SurveyPersistenceService surveyService;
 
+	@Autowired
+	VotingService votingService;
 
-    @RequestMapping(value = "/surveys", method = RequestMethod.GET)
-    public List<Survey> getAllSurvey(@RequestHeader("VOTING_EXECUTIVE_USER") String executingUser, @RequestHeader("VOTING_EXEUCTING_AS_ROLE") String executingUserRole) throws Exception {
-        return surveyService.getAllSurveys();
-    }
+	@RequestMapping(value = "/surveys", method = RequestMethod.GET)
+	public List<Survey> getAllSurvey(
+		// @formatter:off
+			@RequestHeader("VOTING_EXECUTIVE_USER") String executingUser,
+			@RequestHeader("VOTING_EXEUCTING_AS_ROLE") String executingUserRole)
+			throws Exception {
+		// 	@formatter:on	
+		ExecutingUser eU = new ExecutingUser(executingUser, executingUserRole);
+		return votingService.getAllSurveys(eU);
+	}
 
-    
-    @RequestMapping(value = "/surveys", method = RequestMethod.POST)
-    public List<Survey> createSurvey(Survey survey, @RequestHeader("VOTING_EXECUTIVE_USER") String executingUser, @RequestHeader("VOTING_EXEUCTING_AS_ROLE") String executingUserRole) throws Exception {
-        return surveyService.createSurvey(survey);
-    }
-    
-    
-    
-    
-    @RequestMapping(value = "/vote/surveys/{surveyId}/option/{optionId}/users/{userId}", method = RequestMethod.POST)
-    public Survey voteOption(@PathVariable("surveyId") String surveyId, @PathVariable("optionId") String optionId, @PathVariable("userId") String userId) throws Exception {
-        return surveyService.voteSurvey(surveyId, optionId, userId);
-    }
-    
-    
-    
+	@RequestMapping(value = "/surveys", method = RequestMethod.POST)
+	public Survey createSurvey(
+		// @formatter:off
+			Survey survey, 
+			@RequestHeader("VOTING_EXECUTIVE_USER") String executingUser,
+			@RequestHeader("VOTING_EXEUCTING_AS_ROLE") String executingUserRole) 
+			throws Exception {
+		// 	@formatter:on
+		ExecutingUser eU = new ExecutingUser(executingUser, executingUserRole);
+		return votingService.createSurvey(survey, eU);
+	}
+
+	@RequestMapping(value = "/vote/surveys/{surveyId}/option/{optionId}/users/{userId}", method = RequestMethod.POST)
+	public Survey voteOption(
+		// @formatter:off
+    		@PathVariable("surveyId") String surveyId, 
+    		@PathVariable("optionId") String optionId, 
+    		@PathVariable("userId") String userId,
+    		@RequestHeader("VOTING_EXECUTIVE_USER") String executingUser, 
+    		@RequestHeader("VOTING_EXEUCTING_AS_ROLE") String executingUserRole
+    		) throws Exception {
+    	// @formatter:on
+		ExecutingUser eU = new ExecutingUser(executingUser, executingUserRole);
+		return votingService.voteSurvey(surveyId, optionId, userId, eU);
+	}
+
 }
