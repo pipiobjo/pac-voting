@@ -1,4 +1,4 @@
-package com.prodyna.pac.rest;
+package com.prodyna.pac.rest.controller;
 
 import java.util.List;
 
@@ -48,6 +48,20 @@ public class SurveyController {
 		ExecutingUser eU = new ExecutingUser(executingUser, executingUserRole);
 		return votingService.createSurvey(survey, eU);
 	}
+	
+	@RequestMapping(value = "/surveys", method = RequestMethod.PUT)
+	public Survey updateSurvey(
+		// @formatter:off
+			Survey survey, 
+			@RequestHeader("VOTING_EXECUTIVE_USER") String executingUser,
+			@RequestHeader("VOTING_EXEUCTING_AS_ROLE") String executingUserRole) 
+			throws Exception {
+		// 	@formatter:on
+		ExecutingUser eU = new ExecutingUser(executingUser, executingUserRole);
+		return votingService.updateSurvey(survey, eU);
+	}
+	
+	
 
 	@RequestMapping(value = "/vote/surveys/{surveyId}/option/{optionId}/users/{userId}", method = RequestMethod.POST)
 	public Survey voteOption(

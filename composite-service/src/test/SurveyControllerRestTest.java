@@ -1,4 +1,4 @@
-package com.prodyna.pac.controller;
+package com.prodyna.pac.config;
 
 import static org.hamcrest.Matchers.equalTo;
 
@@ -33,7 +33,7 @@ import com.prodyna.pac.model.Survey;
 import com.prodyna.pac.model.VotingUser;
 import com.prodyna.pac.service.persistence.SurveyPersistenceService;
 
-@ActiveProfiles("test")
+//@ActiveProfiles("test")
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(CompositeApplication.class)
 @WebIntegrationTest(randomPort = true)

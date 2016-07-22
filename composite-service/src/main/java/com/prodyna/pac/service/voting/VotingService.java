@@ -42,4 +42,13 @@ public interface VotingService {
 	 */
 	Survey voteSurvey(String surveyId, String optionId, String userId, ExecutingUser eU) throws VotingServiceException;
 
+	/**
+	 * 
+	 * @param survey
+	 * @param eU
+	 * @return
+	 * @throws VotingServiceException 
+	 */
+	Survey updateSurvey(Survey survey, ExecutingUser eU) throws VotingServiceException;
+
 }

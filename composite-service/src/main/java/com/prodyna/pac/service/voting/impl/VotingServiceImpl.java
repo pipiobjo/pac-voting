@@ -21,6 +21,7 @@ import com.prodyna.pac.service.voting.VotingService;
 
 /**
  * Handles all Voting business logic including role checks
+ * 
  * @author bjoern
  *
  */
@@ -35,8 +36,8 @@ public class VotingServiceImpl implements VotingService {
 	RoleService roleService;
 
 	@Override
-	public List<Survey> getAllSurveys(ExecutingUser eU) throws VotingServiceException  {
-		if(!roleService.isUser(eU)){
+	public List<Survey> getAllSurveys(ExecutingUser eU) throws VotingServiceException {
+		if (!roleService.isUser(eU)) {
 			throw new ActionNotAllowedExcpetion("You are not allowed to vote");
 		}
 		return persistence.getAllSurveys();
@@ -48,40 +49,56 @@ public class VotingServiceImpl implements VotingService {
 	@Override
 	public Survey createSurvey(Survey survey, ExecutingUser eU) throws VotingServiceException {
 
-		if (roleService.isUser(eU)) {
-
-			VotingUser user = persistence.getUser(eU.getExecutingUser());
-
-			if (user != null) {
-
-				user = new VotingUser();
-				user.setUserId(eU.getExecutingUser());
-			}
-
-			survey.setCreator(user);
-
-			// TODO Option Validation
-
-			try {
-				return persistence.createSurvey(survey);
-			} catch (PersistenceException e) {
-				throw new VotingServiceException("Error while creating Survey", e);
-			}
-		} else {
+		if (!roleService.isUser(eU)) {
 			throw new ActionNotAllowedExcpetion("Creating surveys is not allowed");
 		}
 
+		VotingUser user = persistence.getUser(eU.getExecutingUser());
+
+		if (user != null) {
+
+			user = new VotingUser();
+			user.setUserId(eU.getExecutingUser());
+		}
+
+		survey.setCreator(user);
+
+		// TODO Option Validation
+
+		try {
+			return persistence.createSurvey(survey);
+		} catch (PersistenceException e) {
+			throw new VotingServiceException("Error while creating Survey", e);
+		}
+
 	}
+
 	/**
 	 * Vote on a survey
 	 */
 	@Override
 	public Survey voteSurvey(String surveyId, String optionId, String userId, ExecutingUser eU)
 			throws VotingServiceException {
-		if(!roleService.isUser(eU)){
+		if (!roleService.isUser(eU)) {
 			throw new ActionNotAllowedExcpetion("You are not allowed to vote");
 		}
 		return persistence.voteSurvey(surveyId, optionId, userId);
+	}
+
+	/**
+	 * 
+	 */
+	@Override
+	public Survey updateSurvey(Survey survey, ExecutingUser eU) throws VotingServiceException{
+		if (!roleService.isUser(eU)) {
+			throw new ActionNotAllowedExcpetion("Creating surveys is not allowed");
+		}
+		try {
+			return persistence.updateSurvey(survey);
+		} catch (PersistenceException e) {
+			throw new VotingServiceException("Error while updating Survey", e);
+		}
+
 	}
 
 }
