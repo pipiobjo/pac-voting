@@ -42,8 +42,9 @@ public interface SurveyPersistenceService {
 	 * @param optionId
 	 * @param userId
 	 * @return
+	 * @throws PersistenceException 
 	 */
-	Survey voteSurvey(String surveyId, String optionId, String userId);
+	Survey voteSurvey(String surveyId, String optionId, String userId) throws PersistenceException;
 
 	/**
 	 * Creating a survey with options, creator and votes

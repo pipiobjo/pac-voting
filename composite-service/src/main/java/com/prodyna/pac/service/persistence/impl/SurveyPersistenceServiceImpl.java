@@ -19,6 +19,7 @@ import org.springframework.hateoas.Link;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.Resources;
 import org.springframework.hateoas.hal.Jackson2HalModule;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -27,6 +28,8 @@ import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -291,18 +294,21 @@ public class SurveyPersistenceServiceImpl implements SurveyPersistenceService {
 	@Override
 	@HystrixCommand
 	@Transactional
-	public Survey voteSurvey(String surveyId, String optionId, String userId) {
+	public Survey voteSurvey(String surveyId, String optionId, String userId) throws PersistenceException {
 		ServiceInstance votingService = loadBalancer.choose("core-service-voting");
 
-		Map<String, Object> map = new HashMap<String, Object>();
+		Map<String, Object> map = new HashMap<>();
 		map.put("surveyId", surveyId);
 		map.put("optionId", optionId);
 		map.put("userId", userId);
 
 		String url = votingService.getUri() + VOTE_ON_SURVEY_TEMPLATE;
 
-		ResponseEntity<Survey> response = restTemplate.getForEntity(url, Survey.class, map);
-		return response.getBody();
+		
+		//restTemplate.postForObject(url, requestEntity, String.class, map);
+//		restTemplate.postForEntity(url, null, String.class, map);
+		restTemplate.postForLocation(url, null, map);
+		return getSurveyBySurveyId(surveyId);
 
 	}
 
@@ -313,8 +319,6 @@ public class SurveyPersistenceServiceImpl implements SurveyPersistenceService {
 	@Override
 	public Survey createSurvey(Survey survey) throws PersistenceException {
 		ServiceInstance votingService = loadBalancer.choose("core-service-voting");
-
-		Map<String, Object> map = new HashMap<String, Object>();
 
 		String url = votingService.getUri() + CREATE_SURVEY_URL_EXTENSION_TEMPLATE;
 

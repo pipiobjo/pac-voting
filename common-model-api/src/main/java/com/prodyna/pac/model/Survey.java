@@ -1,28 +1,91 @@
 package com.prodyna.pac.model;
 
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
-public interface Survey {
+/**
+ * Created by bjoern on 11.02.16.
+ */
+public class Survey {
+    private String surveyId;
+    private String description;
+    private String title;
 
-	String getDescription();
+    public   List<Option> options = new ArrayList<>();
 
-	void setDescription(String description);
 
-	String getTitle();
+    public VotingUser creator;
 
-	void setTitle(String title);
+    /**
+     *
+     */
+    public Survey(){
 
-	String getSurveyId();
+    }
 
-	void setId(String surveyId);
 
-	Set<Class<? extends Option>> getOptions();
+    /**
+     *
+     * @param description
+     * @param title
+     * @param options
+     * @param creator
+     */
+    public Survey(String description, String title, List<Option> options, VotingUser creator){
+        this.surveyId = UUID.randomUUID().toString();
+        this.description = description;
+        this.title = title;
+        this.options = options;
+        this.creator = creator;
+    }
 
-	void setOptions(Set<Class<? extends Option>> options);
 
-	Class<? extends User> getCreator();
+    public String getDescription() {
+        return description;
+    }
 
-	void setCreator(Class<? extends User> creator);
+    public void setDescription(String description) {
 
-	String toString();
+        this.description = description;
+    }
+
+    public String getTitle() {
+
+        return title;
+    }
+
+    public void setTitle(String title) {
+
+        this.title = title;
+    }
+
+    public VotingUser getCreator() {
+        return creator;
+    }
+
+    public void setCreator(VotingUser creator) {
+
+        this.creator = creator;
+    }
+
+    public String getSurveyId(){
+
+        return this.surveyId;
+    }
+
+    public void setOptions(List<Option> options) {
+        this.options = options;
+    }
+
+    /* public String toString() {
+        String results = title + "'s Options include\n";
+        if (options != null) {
+            for (Option vop : options) {
+                results += "\t- OptionId" + vop.optionId + "\n";
+            }
+        }
+        results += "\t creator=" + this.creator.toString();
+        return results;
+    }*/
 }

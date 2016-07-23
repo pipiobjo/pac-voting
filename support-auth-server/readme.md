@@ -23,6 +23,9 @@ curl -XPOST -k acme:acmesecret@localhost:9999/auth/oauth/token \
 
 ```
 
+
+
+
 Response
 
 ```bash
@@ -43,6 +46,16 @@ API Call
  
  ```
 
+
+All in One
+
+```bash
+
+	token=`curl -XPOST -k acme:acmesecret@localhost:9999/auth/oauth/token -d grant_type=password -d client_id=acme -d client_secret=acmesecret -d redirect_uri=http://localhost:9999/auth/user -d username=bob -d password=bobspassword | jq -cMCr ".access_token"`
+
+	curl --header "Authorization: Bearer $token" http://localhost:9000/surveys
+
+ ```
 
 
  

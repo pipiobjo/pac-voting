@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -48,7 +49,7 @@ public class SurveyController {
         optionRepository.deleteAll();
     }
 
-    @RequestMapping(value="/findSurveyById/{surveyId}", method = RequestMethod.GET)
+    @RequestMapping(value="/findSurveyById/{surveyId}", method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON_VALUE})
     public Survey getSurveyById(@PathVariable("surveyId")String surveyId){
     	Survey survey = surveyRepository.findBySurveyId(surveyId);
     	return survey;

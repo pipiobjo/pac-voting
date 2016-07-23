@@ -5,9 +5,10 @@ package com.prodyna.pac.model;
  *
  */
 public enum Roles {
-	ADMIN("admin"),
-	MANAGER("manager"),
-	USER("user");
+	ADMIN("ROLE_ADMIN"),
+	MANAGER("ROLE_MANAGER"),
+	GUEST("ROLE_GUEST"),
+	USER("ROLE_USERS");
 
 
 	private String roleName;

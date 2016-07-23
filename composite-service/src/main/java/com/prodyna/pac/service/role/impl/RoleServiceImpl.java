@@ -25,7 +25,7 @@ public class RoleServiceImpl implements RoleService {
 	 */
 	@Override
 	public Boolean isAdmin(ExecutingUser user){
-		return Roles.ADMIN.getRoleName().equals(user.getExecutingUserRole());
+		return user.getExecutingUserRole().contains(Roles.ADMIN.getRoleName());
 	}
 	
 	/* (non-Javadoc)
@@ -33,14 +33,13 @@ public class RoleServiceImpl implements RoleService {
 	 */
 	@Override
 	public Boolean isManager(ExecutingUser user){
-		boolean hasManagerRoleAssigned =  Roles.MANAGER.getRoleName().equals(user.getExecutingUserRole());
-		boolean hadAdminRoleAssigned = Roles.ADMIN.getRoleName().equals(user.getExecutingUserRole());
+		boolean hasManagerRoleAssigned =  user.getExecutingUserRole().contains(Roles.MANAGER.getRoleName());
+		boolean hadAdminRoleAssigned = user.getExecutingUserRole().contains(Roles.ADMIN.getRoleName());
 		
 		if(hasManagerRoleAssigned || hadAdminRoleAssigned){
 			return true;
-		}else{
-			return false;
 		}
+		return false;
 	}
 
 	
@@ -50,14 +49,26 @@ public class RoleServiceImpl implements RoleService {
 	 */
 	@Override
 	public Boolean isUser(ExecutingUser user){
-		boolean hasManagerRoleAssigned =  Roles.MANAGER.getRoleName().equals(user.getExecutingUserRole());
-		boolean hadAdminRoleAssigned = Roles.ADMIN.getRoleName().equals(user.getExecutingUserRole());
-		boolean hadUserRoleAssigned = Roles.USER.getRoleName().equals(user.getExecutingUserRole());
+		boolean hasManagerRoleAssigned =  user.getExecutingUserRole().contains(Roles.MANAGER.getRoleName());
+		boolean hadAdminRoleAssigned = user.getExecutingUserRole().contains(Roles.ADMIN.getRoleName());
+		boolean hadUserRoleAssigned = user.getExecutingUserRole().contains(Roles.USER.getRoleName());
 		
 		if(hadUserRoleAssigned || hasManagerRoleAssigned || hadAdminRoleAssigned){
 			return true;
-		}else{
-			return false;
 		}
+		return false;
+	}
+	@Override
+	public Boolean isAnonymous(ExecutingUser user) {
+		boolean hasManagerRoleAssigned =  user.getExecutingUserRole().contains(Roles.MANAGER.getRoleName());
+		boolean hadAdminRoleAssigned = user.getExecutingUserRole().contains(Roles.ADMIN.getRoleName());
+		boolean hadUserRoleAssigned = user.getExecutingUserRole().contains(Roles.USER.getRoleName());
+		boolean hadUserGuestRoleAssigned = user.getExecutingUserRole().contains(Roles.GUEST.getRoleName());
+		
+		if(hadUserGuestRoleAssigned || hadUserRoleAssigned || hasManagerRoleAssigned || hadAdminRoleAssigned){
+			return true;
+		}
+
+		return false;
 	}
 }

@@ -26,5 +26,12 @@ public interface RoleService {
 	 * @return
 	 */
 	Boolean isUser(ExecutingUser user);
+	
+	/**
+	 * Checks if user is an unauthenticated user
+	 * @param user
+	 * @return
+	 */
+	Boolean isAnonymous(ExecutingUser user);
 
 }

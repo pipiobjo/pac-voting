@@ -3,6 +3,7 @@ package com.prodyna.pac.rest.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,12 +22,9 @@ import com.prodyna.pac.service.voting.VotingService;
 public class SurveyController {
 
 	@Autowired
-	private SurveyPersistenceService surveyService;
-
-	@Autowired
 	VotingService votingService;
 
-	@RequestMapping(value = "/surveys", method = RequestMethod.GET)
+	@RequestMapping(value = "/surveys", method = RequestMethod.GET, produces = { MediaType.APPLICATION_JSON_VALUE})
 	public List<Survey> getAllSurvey(
 		// @formatter:off
 			@RequestHeader("VOTING_EXECUTIVE_USER") String executingUser,
@@ -37,7 +35,7 @@ public class SurveyController {
 		return votingService.getAllSurveys(eU);
 	}
 
-	@RequestMapping(value = "/surveys", method = RequestMethod.POST)
+	@RequestMapping(value = "/surveys", method = RequestMethod.POST, produces = { MediaType.APPLICATION_JSON_VALUE})
 	public Survey createSurvey(
 		// @formatter:off
 			Survey survey, 
@@ -49,7 +47,7 @@ public class SurveyController {
 		return votingService.createSurvey(survey, eU);
 	}
 	
-	@RequestMapping(value = "/surveys", method = RequestMethod.PUT)
+	@RequestMapping(value = "/surveys", method = RequestMethod.PUT, produces = { MediaType.APPLICATION_JSON_VALUE})
 	public Survey updateSurvey(
 		// @formatter:off
 			Survey survey, 
@@ -63,7 +61,7 @@ public class SurveyController {
 	
 	
 
-	@RequestMapping(value = "/vote/surveys/{surveyId}/option/{optionId}/users/{userId}", method = RequestMethod.POST)
+	@RequestMapping(value = "/vote/surveys/{surveyId}/option/{optionId}/users/{userId}", method = RequestMethod.POST, produces = { MediaType.APPLICATION_JSON_VALUE})
 	public Survey voteOption(
 		// @formatter:off
     		@PathVariable("surveyId") String surveyId, 

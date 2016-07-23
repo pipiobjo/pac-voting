@@ -37,8 +37,8 @@ public class VotingServiceImpl implements VotingService {
 
 	@Override
 	public List<Survey> getAllSurveys(ExecutingUser eU) throws VotingServiceException {
-		if (!roleService.isUser(eU)) {
-			throw new ActionNotAllowedExcpetion("You are not allowed to vote");
+		if (!roleService.isAnonymous(eU)) {
+			throw new ActionNotAllowedExcpetion("You are not allowed to see the surveys");
 		}
 		return persistence.getAllSurveys();
 	}
@@ -82,7 +82,11 @@ public class VotingServiceImpl implements VotingService {
 		if (!roleService.isUser(eU)) {
 			throw new ActionNotAllowedExcpetion("You are not allowed to vote");
 		}
-		return persistence.voteSurvey(surveyId, optionId, userId);
+		try {
+			return persistence.voteSurvey(surveyId, optionId, userId);
+		} catch (PersistenceException e) {
+			throw new VotingServiceException("Error while voting on survey="+ surveyId + " option=" + optionId + " user=" + userId,e);
+		}
 	}
 
 	/**

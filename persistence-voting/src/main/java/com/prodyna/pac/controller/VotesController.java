@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,8 +33,14 @@ public class VotesController {
     @Autowired
     OptionGraphRepository optionRepository;
 
-    @RequestMapping(value = "/vote/surveys/{surveyId}/option/{optionId}/users/{userId}", method = RequestMethod.POST)
-    public Survey voteOption(@PathVariable("surveyId") String surveyId, @PathVariable("optionId") String optionId, @PathVariable("userId") String userId) {
+    /**
+     * 
+     * @param surveyId
+     * @param optionId
+     * @param userId
+     */
+    @RequestMapping(value = "/vote/surveys/{surveyId}/option/{optionId}/users/{userId}", method = RequestMethod.POST, produces = { MediaType.APPLICATION_JSON_VALUE} )
+    public void voteOption(@PathVariable("surveyId") String surveyId, @PathVariable("optionId") String optionId, @PathVariable("userId") String userId) {
         Survey survey = surveyRepository.findBySurveyId(surveyId);
         if(survey == null){
         	throw new IllegalArgumentException("The 'surveyId' parameter must not be null or empty and must and existing survey");
@@ -61,7 +68,8 @@ public class VotesController {
         option.setVoters(voters);
         options.add(option);
         survey.setOptions(options);
-        return surveyRepository.save(survey);
+        surveyRepository.save(survey);
+        
         
     }
 	
