@@ -1,15 +1,14 @@
 {
-  "name": "shardis-ui",
-  "version": "0.0.0",
-  "description": "shardis-ui",
+  "name": "voting-ui",
+  "version": "0.0.1",
+  "description": "voting-ui",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/kucharzyk/spring-angular2-starter.git"
+    "url": "git+https://github.com/pipiobjo/pac-voting.git"
   },
-  "author": "Tomasz Kucharzyk",
-  "license": "MIT",
+  "author": "Björn Pipiorke",
   "bugs": {
-    "url": "https://github.com/kucharzyk/spring-angular2-starter/issues"
+    "url": "https://github.com/pipiobjo/pac-voting/issues"
   },
   "private": true,
   "dependencies": {

@@ -1,11 +1,12 @@
 import {Component} from '@angular/core';
-import {Title} from './shared';
+import {Survey} from './shared';
+import {SurveyService} from './shared';
 import {XLarge, AuthService} from '../shared';
 
 @Component({
   selector: 'home',
   providers: [
-    Title
+    SurveyService
   ],
   directives: [XLarge as any],
   pipes: [],
@@ -13,16 +14,20 @@ import {XLarge, AuthService} from '../shared';
   template: require('./home.component.html')
 })
 export class Home {
-  angularLogo = 'assets/img/angular-logo.png';
+  surveys: Survey[];        
+  errorMessage: string;
 
-  data = {value: ''};
 
-  constructor(public title:Title, public authService:AuthService) {
+  constructor(public surveyService:SurveyService, public authService:AuthService) {
   }
 
   ngOnInit() {
     console.log('hello `Home` component');
-    this.title.getData().subscribe(data => this.data = data);
+    this.surveyService.getData()
+        .subscribe(
+            surveys => this.surveys = surveys,
+            error =>  this.errorMessage = <any>error
+        );
   }
 
 }

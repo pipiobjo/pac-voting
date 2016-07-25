@@ -12,19 +12,19 @@ export class LazyLoader {
 
       switch (lazymodule) {
         case ASYNC_ROUTES.About:
-          require.ensure([], (require) => {
-            resolve(require('../../../app/+about/index'));
-          });
+//          require.ensure([], (require) => {
+//            resolve(require('../../../app/+about/index'));
+//          });
           break;
         case ASYNC_ROUTES.Playground:
-          require.ensure([], (require) => {
-            resolve(require('../../../app/+playground/index'));
-          });
+//          require.ensure([], (require) => {
+//            resolve(require('../../../app/+playground/index'));
+//          });
           break;
         case ASYNC_ROUTES.Crud:
-          require.ensure([], (require) => {
-            resolve(require('../../../app/+crud/index'));
-          });
+//          require.ensure([], (require) => {
+//            resolve(require('../../../app/+crud/index'));
+//          });
           break;
         default:
           reject();

@@ -17,19 +17,6 @@ export const routes:RouterConfig = [
     component: Home
   },
   {
-    path: 'about',
-    component: 'About'
-  },
-  {
-    path: 'crud',
-    component: 'Crud',
-    canActivate: [AuthenticatedGuard, AdminGuard]
-  },
-  {
-    path: 'playground',
-    component: 'Playground'
-  },
-  {
     path: 'login',
     component: Login,
     canActivate: [UnauthenticatedGuard]

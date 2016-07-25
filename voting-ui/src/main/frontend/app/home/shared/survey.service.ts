@@ -4,18 +4,18 @@ import {AuthService} from '../../shared';
 import 'rxjs/Rx';
 
 @Injectable()
-export class Title {
+export class SurveyService {
   value = 'Angular 2';
 
   constructor(public http:Http, public authService:AuthService) {
   }
 
   getData() {
-    console.log('Title.getData()');
+    console.log('Survey.getData()');
 
     return this
       .http
-      .get('/api/title', {headers: this.authService.getAuthorizationHeaders()})
+      .get('/api/surveys', {headers: this.authService.getAuthorizationHeaders()})
       .map(res => res.json());
   }
 

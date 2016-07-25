@@ -5,25 +5,6 @@ export const APP_MENU:AppMenuItem[] = [
     description: 'Home page',
     icon: 'public',
     link: ['']
-  },
-  {
-    name: 'Playground',
-    description: 'Playground page',
-    icon: 'casino',
-    link: ['playground']
-  },
-  {
-    name: 'Crud',
-    description: 'Simple crud',
-    icon: 'edit',
-    link: ['crud'],
-    roles: ['ROLE_ADMIN']
-  },
-  {
-    name: 'About',
-    description: 'About page',
-    icon: 'person',
-    link: ['about']
   }
 ];
 

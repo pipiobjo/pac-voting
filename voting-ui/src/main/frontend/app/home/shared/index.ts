@@ -1,1 +1,3 @@
-export * from './title.service'
+export * from './survey.service'
+export * from './model'
+

@@ -38,7 +38,7 @@ zuul:
      shardis-api:
           sensitiveHeaders:
           path: /api/**
-          stripPrefix: false
+          stripPrefix: true
           serviceId: api-voting-service
      support-auth:
           sensitiveHeaders:
