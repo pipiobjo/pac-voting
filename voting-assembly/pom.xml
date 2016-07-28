@@ -9,6 +9,11 @@
 
 
 	<dependencies>
+		<dependency>
+			<groupId>com.prodyna.pac.bp</groupId>
+			<artifactId>voting-ui</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 
 		<dependency>
 			<groupId>com.prodyna.pac.bp</groupId>

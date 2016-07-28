@@ -15,7 +15,6 @@ cd support-edge-server;         mvn clean install $MAVEN_OPTS; cd -
 cd support-monitor;   mvn clean install $MAVEN_OPTS; cd -
 cd support-service-registry;    mvn clean install $MAVEN_OPTS; cd -
 
-#cd voting-web;			mvn clean install $MAVEN_OPTS; cd -
 cd voting-ui;			mvn clean install $MAVAN_OPTS -P dev -Dspring.profiles.active=dev; cd - 
 
 cd voting-assembly;		mvn clean package; cd -

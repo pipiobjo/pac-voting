@@ -47,8 +47,6 @@ zuul:
           sensitiveHeaders:
           path: /auth/**
           stripPrefix: false
-  debug:
-     request: true
 
 eureka:
   instance:
