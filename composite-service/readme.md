@@ -1,5 +1,5 @@
 # Publish Monitoring Stream 
-Hystrix Stream: http://bpipiorke:8280/hystrix.stream/
+Hystrix Stream: http://localhost:8280/hystrix.stream/
 
 
 # Rest API

@@ -24,8 +24,8 @@ describe('App', () => {
     AuthService,
   ]);
 
-  it('should have a url', inject([App], (app) => {
-    expect(app.url).toEqual('https://github.com/kucharzyk');
-  }));
+//  it('should have a url', inject([App], (app) => {
+//    expect(app.url).toEqual('https://github.com/kucharzyk');
+//  }));
 
 });

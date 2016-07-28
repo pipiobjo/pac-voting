@@ -14,7 +14,8 @@ import {XLarge, AuthService} from '../shared';
   template: require('./home.component.html')
 })
 export class Home {
-  surveys: Survey[];        
+        
+  surveys: Survey [];        
   errorMessage: string;
 
 

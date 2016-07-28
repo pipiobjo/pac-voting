@@ -2,6 +2,7 @@ package com.prodyna.pac.service.voting;
 
 import java.util.List;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.prodyna.pac.model.ExecutingUser;
 import com.prodyna.pac.model.Survey;
 import com.prodyna.pac.service.exception.ActionNotAllowedExcpetion;
@@ -20,6 +21,7 @@ public interface VotingService {
 	 * @return
 	 * @throws ActionNotAllowedExcpetion
 	 */
+	@HystrixCommand
 	List<Survey> getAllSurveys(ExecutingUser eU) throws VotingServiceException;
 
 	/**
@@ -29,6 +31,7 @@ public interface VotingService {
 	 * @return
 	 * @throws ActionNotAllowedExcpetion
 	 */
+	@HystrixCommand
 	Survey createSurvey(Survey survey, ExecutingUser eU) throws VotingServiceException;
 
 	/**
@@ -40,6 +43,7 @@ public interface VotingService {
 	 * @return
 	 * @throws ActionNotAllowedExcpetion
 	 */
+	@HystrixCommand
 	Survey voteSurvey(String surveyId, String optionId, String userId, ExecutingUser eU) throws VotingServiceException;
 
 	/**
@@ -49,6 +53,7 @@ public interface VotingService {
 	 * @return
 	 * @throws VotingServiceException 
 	 */
+	@HystrixCommand
 	Survey updateSurvey(Survey survey, ExecutingUser eU) throws VotingServiceException;
 
 }

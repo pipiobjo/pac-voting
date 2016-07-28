@@ -2,6 +2,7 @@ package com.prodyna.pac.service.persistence;
 
 import java.util.List;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.prodyna.pac.model.Survey;
 import com.prodyna.pac.model.VotingUser;
 import com.prodyna.pac.service.exception.PersistenceException;
@@ -20,6 +21,7 @@ public interface SurveyPersistenceService {
 	 * @return
 	 * @throws Exception
 	 */
+	@HystrixCommand
 	Survey getSurveyBySurveyId(String surveyId) throws Exception;
 
 	/**
@@ -27,12 +29,14 @@ public interface SurveyPersistenceService {
 	 * @param creator
 	 * @return
 	 */
+	@HystrixCommand
 	List<Survey> getSurveyByCreator(String creator);
 
 	/**
 	 * 
 	 * @return
 	 */
+	@HystrixCommand
 	List<Survey> getAllSurveys();
 
 	/**
@@ -44,6 +48,7 @@ public interface SurveyPersistenceService {
 	 * @return
 	 * @throws PersistenceException 
 	 */
+	@HystrixCommand
 	Survey voteSurvey(String surveyId, String optionId, String userId) throws PersistenceException;
 
 	/**
@@ -53,6 +58,7 @@ public interface SurveyPersistenceService {
 	 * @return
 	 * @throws PersistenceException 
 	 */
+	@HystrixCommand
 	Survey createSurvey(Survey survey) throws PersistenceException;
 
 	/**
@@ -62,6 +68,7 @@ public interface SurveyPersistenceService {
 	 * @return
 	 * @throws PersistenceException 
 	 */
+	@HystrixCommand
 	Survey updateSurvey(Survey survey) throws PersistenceException;
 
 	/**
@@ -70,6 +77,7 @@ public interface SurveyPersistenceService {
 	 * @param executingUser
 	 * @return null if no User found
 	 */
+	@HystrixCommand
 	VotingUser getUser(String executingUser);
 
 }

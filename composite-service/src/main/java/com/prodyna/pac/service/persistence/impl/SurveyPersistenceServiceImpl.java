@@ -81,7 +81,6 @@ public class SurveyPersistenceServiceImpl implements SurveyPersistenceService {
 	 *
 	 */
 	@Override
-	@HystrixCommand
 	public Survey getSurveyBySurveyId(String surveyId) {
 		if(StringUtils.isBlank(surveyId)){
 			return null;

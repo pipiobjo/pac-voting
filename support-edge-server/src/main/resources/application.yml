@@ -33,15 +33,20 @@ security:
 
 #zuul configuration must be after security config
 zuul:
+  debug:
+    request: true
+  add-proxy-headers: true
+  ignoredServices: '*'
   routes:
-    votes:
-      path: /voting/**
-      serviceId: api-voting-service
-      sensitive-headers:
-      #url: http://localhost:9000/
-    user:
-      path: /user/**
-      url: http://localhost:9999/uaa/user
+     shardis-api:
+          sensitiveHeaders:
+          path: /api/**
+          stripPrefix: true
+          serviceId: api-voting-service
+     support-auth:
+          sensitiveHeaders:
+          path: /auth/**
+          stripPrefix: false
   debug:
      request: true
 
